@@ -8,6 +8,7 @@ import star.starwriting.dto.MemberRequestDto;
 import star.starwriting.dto.MemberResponseDto;
 import star.starwriting.repository.MemberRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,18 +28,30 @@ public class MemberService {
         validateDuplicateMember(member);
 
         memberRepository.save(member);
-        return member.getUserId();
+        return member.getId();
     }
 
-    public List<Member> findAllMembers() {
-        return memberRepository.findAll();
+    public List<MemberResponseDto> findAllMembers() {
+        List<Member> memberList = memberRepository.findAll();
+        List<MemberResponseDto> memberResponseDtoList = new ArrayList<>();
+
+//        *****개선 필요할듯*****
+        for(Member m : memberList) {
+            memberResponseDtoList.
+                    add(new MemberResponseDto(
+                            m.getId(), m.getMemberId(), m.getName(), m.getEmail(), m.getNickname(), m.getTier()
+                        )
+                    );
+        }
+
+        return memberResponseDtoList;
     }
 
     public Optional<MemberResponseDto> findMember(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
 
         MemberResponseDto memberResponseDto = new MemberResponseDto(
-                member.getUserId(), member.getId(), member.getName(), member.getEmail(), member.getNickname(), member.getTier()
+                member.getId(), member.getMemberId(), member.getName(), member.getEmail(), member.getNickname(), member.getTier()
         );
 
         return Optional.ofNullable(memberResponseDto);

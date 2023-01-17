@@ -12,8 +12,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberResponseDto {
-    private Long userId;
-    private String id;
+    private Long id;
+    private String memberId;
     private String name;
     private String email;
     private String nickname;

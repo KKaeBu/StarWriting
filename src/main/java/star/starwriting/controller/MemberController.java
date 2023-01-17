@@ -19,7 +19,7 @@ public class MemberController {
     }
 
     @GetMapping("/api/members")
-    public List<Member> getMemberList() {
+    public List<MemberResponseDto> getMemberList() {
         return memberService.findAllMembers();
     }
 

@@ -14,8 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberRequestDto {
-    private Long userId;
-    private String id;
+    private String memberId;
     private String password;
     private String name;
     private Date birthday;
@@ -28,8 +27,7 @@ public class MemberRequestDto {
 
     public Member toEntity() {
         return Member.builder()
-                .userId(this.userId)
-                .id(this.id)
+                .memberId(this.memberId)
                 .password(this.password)
                 .name(this.name)
                 .birthday(this.birthday)

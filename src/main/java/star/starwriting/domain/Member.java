@@ -10,15 +10,14 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user_tb")
+@Table(name = "member_tb")
 @Entity
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
-    @Column(length = 20, nullable = false)
-    private String id;
+    private Long id;
+    @Column(name = "member_id", length = 20, nullable = false)
+    private String memberId;
     @Column(length = 20, nullable = false)
     private String password;
     @Column(length = 20, nullable = false)
