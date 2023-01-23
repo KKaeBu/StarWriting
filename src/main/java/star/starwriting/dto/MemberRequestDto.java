@@ -1,12 +1,17 @@
 package star.starwriting.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import star.starwriting.domain.Member;
 
 import javax.persistence.Column;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
@@ -14,9 +19,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberRequestDto {
+
     private String memberId;
     private String password;
     private String name;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
     private String email;
     private String phoneNum;
