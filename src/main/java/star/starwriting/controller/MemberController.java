@@ -1,5 +1,6 @@
 package star.starwriting.controller;
 
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import star.starwriting.domain.Member;
 import star.starwriting.dto.MemberRequestDto;
@@ -16,6 +17,12 @@ public class MemberController {
 
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
+    }
+
+    @GetMapping("/")
+    public String home(Model model) {
+        model.addAttribute("members", memberService.findAllMembers());
+        return "home";
     }
 
     @GetMapping("/api/members")

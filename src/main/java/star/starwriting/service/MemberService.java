@@ -8,6 +8,8 @@ import star.starwriting.dto.MemberRequestDto;
 import star.starwriting.dto.MemberResponseDto;
 import star.starwriting.repository.MemberRepository;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +29,15 @@ public class MemberService {
         Member member = memberRequestDto.toEntity();
         validateDuplicateMember(member);
 
+        // 현재 날짜 구하기
+        LocalDate now = LocalDate.now();
+        // 포맷 정의
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        // 포맷 적용
+        String formatedNow = now.format(formatter);
+
+        member.setCreateDate(formatedNow);
+
         memberRepository.save(member);
         return member.getId();
     }
@@ -39,7 +50,13 @@ public class MemberService {
         for(Member m : memberList) {
             memberResponseDtoList.
                     add(new MemberResponseDto(
-                            m.getId(), m.getMemberId(), m.getName(), m.getEmail(), m.getNickname(), m.getTier()
+                            m.getId(),
+                            m.getMemberId(),
+                            m.getName(),
+                            m.getEmail(),
+                            m.getNickname(),
+                            m.getTier(),
+                            m.getCreateDate()
                         )
                     );
         }
@@ -51,7 +68,13 @@ public class MemberService {
         Member member = memberRepository.findById(memberId).get();
 
         MemberResponseDto memberResponseDto = new MemberResponseDto(
-                member.getId(), member.getMemberId(), member.getName(), member.getEmail(), member.getNickname(), member.getTier()
+                member.getId(),
+                member.getMemberId(),
+                member.getName(),
+                member.getEmail(),
+                member.getNickname(),
+                member.getTier(),
+                member.getCreateDate()
         );
 
         return Optional.ofNullable(memberResponseDto);

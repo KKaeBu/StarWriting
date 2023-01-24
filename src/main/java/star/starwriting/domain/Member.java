@@ -1,8 +1,11 @@
 package star.starwriting.domain;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -33,6 +36,8 @@ public class Member {
     private String address;
     @Column(nullable = false)
     private String sex;
+    @Column(name = "create_date")
+    private String createDate;
 //    이미지 파일
 
 

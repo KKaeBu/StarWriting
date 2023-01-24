@@ -18,4 +18,5 @@ public class MemberResponseDto {
     private String email;
     private String nickname;
     private String tier;
+    private String createDate;
 }
