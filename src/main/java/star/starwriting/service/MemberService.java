@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import star.starwriting.domain.Member;
 import star.starwriting.dto.MemberRequestDto;
 import star.starwriting.dto.MemberResponseDto;
+import star.starwriting.repository.MemberProfileImageRepository;
 import star.starwriting.repository.MemberRepository;
 
 import java.time.LocalDate;
@@ -19,10 +20,12 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final MemberProfileImageRepository memberProfileImageRepository;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository, MemberProfileImageRepository memberProfileImageRepository) {
         this.memberRepository = memberRepository;
+        this.memberProfileImageRepository = memberProfileImageRepository;
     }
 
     public Long join(MemberRequestDto memberRequestDto) {

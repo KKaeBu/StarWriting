@@ -39,6 +39,9 @@ public class Member {
     @Column(name = "create_date")
     private String createDate;
 //    이미지 파일
+    @Column(name = "profile_image")
+    @OneToOne(mappedBy = "member_profile_img_tb")
+    private MemberProfileImage profileImage;
 
 //    데이터 기본값을 설정해주기 위한 어노테이션 및 메소드
     @PrePersist
