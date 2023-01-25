@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.orh">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/style.css">
@@ -23,8 +23,11 @@
             <th width="50">#(pk)</th>
             <th width="300">아이디</th>
             <th width="200">이름</th>
+            <th width="200">닉네임</th>
+            <th width="200">이메일</th>
+            <th width="200">티어</th>
             <th width="200">가입일</th>
-            <th width="200">정보 보기/수정</th>
+            <th width="200">정보 보기</th>
         </tr>
         </thead>
         <tbody align="center">
@@ -32,7 +35,10 @@
             <td th:text="${member.id}"></td>
             <td th:text="${member.memberId}"></td>
             <td th:text="${member.name}"></td>
-            <td th:text="${member.updateDate}"></td>
+            <td th:text="${member.nickname}"></td>
+            <td th:text="${member.email}"></td>
+            <td th:text="${member.tier}"></td>
+            <td th:text="${member.createDate}"></td>
             <td> <button th:onclick="|location.href='@{/api/members}'+${member.id}|" style="height:40px;">보기</button> </td>
         </tr>
         </tbody>

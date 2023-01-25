@@ -17,11 +17,10 @@ public class MemberRequestDto {
     private String memberId;
     private String password;
     private String name;
-    private Date birthday;
+    private String birthday;
     private String email;
     private String phoneNum;
     private String nickname;
-    private String tier;
     private String address;
     private String sex;
 
@@ -34,7 +33,6 @@ public class MemberRequestDto {
                 .email(this.email)
                 .phoneNum(this.phoneNum)
                 .nickname(this.nickname)
-                .tier(this.tier)
                 .address(this.address)
                 .sex(this.sex)
                 .build();

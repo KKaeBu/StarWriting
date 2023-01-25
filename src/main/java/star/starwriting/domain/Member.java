@@ -26,7 +26,7 @@ public class Member {
     @Column(length = 20, nullable = false)
     private String name;
     @Column(nullable = false)
-    private Date birthday;
+    private String birthday;
     private String email;
     @Column(name = "phone_num")
     private String phoneNum;
@@ -41,4 +41,8 @@ public class Member {
 //    이미지 파일
 
 
+    @PrePersist
+    public void prePersist(){
+        this.tier = this.tier == null ? "BRONZE" : this.tier;
+    }
 }
