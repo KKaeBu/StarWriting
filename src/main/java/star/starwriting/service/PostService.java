@@ -6,8 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import star.starwriting.domain.Member;
 import star.starwriting.domain.Post;
 import star.starwriting.dto.PostRequestDto;
+import star.starwriting.dto.PostResponseDto;
 import star.starwriting.repository.MemberRepository;
 import star.starwriting.repository.PostRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -28,5 +32,19 @@ public class PostService {
         postRepository.save(post);
 
         return post.getId();
+    }
+
+    public List<PostResponseDto> findAllPosts() {
+        List<Post> postList = postRepository.findAll();
+        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+
+        for (Post p : postList) {
+            postResponseDtoList
+                    .add(new PostResponseDto(
+                            p.getId(), p.getPostingDate(), p.getSharedNum(), p.getTitle(), p.getView(), p.getMember()
+                        )
+                    );
+        }
+        return postResponseDtoList;
     }
 }
