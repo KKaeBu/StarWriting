@@ -39,7 +39,7 @@
             <td th:text="${member.email}"></td>
             <td th:text="${member.tier}"></td>
             <td th:text="${member.createDate}"></td>
-            <td> <button th:onclick="|location.href='@{/api/members}'+${member.id}|" style="height:40px;">보기</button> </td>
+            <td> <button th:onclick="|location.href='@{/api/members/}'+${member.id}|" style="height:40px;">보기</button> </td>
         </tr>
         </tbody>
     </table>

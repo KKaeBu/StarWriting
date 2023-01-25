@@ -40,7 +40,7 @@ public class Member {
     private String createDate;
 //    이미지 파일
 
-
+//    데이터 기본값을 설정해주기 위한 어노테이션 및 메소드
     @PrePersist
     public void prePersist(){
         this.tier = this.tier == null ? "BRONZE" : this.tier;

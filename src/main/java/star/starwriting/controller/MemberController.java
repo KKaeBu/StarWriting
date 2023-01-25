@@ -20,25 +20,30 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-//    회원 목록 조회 화면
+//    홈 화면
     @GetMapping(value = {"", "/"})
     public String home(Model model) {
         model.addAttribute("members", memberService.findAllMembers());
         return "home";
     }
 
-//    회원 가입 화면
+//    회원 목록 조회 화면
     @GetMapping("/api/members")
     public String getMemberList() {
 //        return memberService.findAllMembers();
         return "members/signUpForm";
     }
 
+//    회원 정보 화면
     @GetMapping("/api/members/{id}")
-    public Optional<MemberResponseDto> getMember(@PathVariable("id") Long memberId) {
-        return memberService.findMember(memberId);
+    public String getMember(@PathVariable("id") Long memberId, Model model) {
+//        return memberService.findMember(memberId);
+        MemberResponseDto member = memberService.findMember(memberId).get();
+        model.addAttribute("member", member);
+        return "members/memberInfo";
     }
 
+//    회원 가입 화면
     @PostMapping("/api/members")
     public String saveMember(MemberRequestDto requestDto) {
 //        return memberService.join(requestDto);
