@@ -28,6 +28,9 @@ public class Post {
     @Column(length = 20, nullable = false)
     private String title;
 
+    @Column(name="main_text", length = 100, nullable = false)
+    private String mainText;
+
     @Column(name = "posting_date")
     @CreationTimestamp
     private Date postingDate; // default값으로 작성 시간 자동 추가 해야댐 *일단함

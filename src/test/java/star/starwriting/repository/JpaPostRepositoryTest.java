@@ -25,10 +25,12 @@ public class JpaPostRepositoryTest {
         PostRequestDto post = new PostRequestDto();
 
         String title = "테스트코드 제목";
+        String mainText = "테스트코드 글 내용";
         String memberId = "oooo";
 
         post.setTitle(title);
         post.setMember(memberId);
+        post.setMainText(mainText);
 
         Long savedId = postService.join(post);
     }

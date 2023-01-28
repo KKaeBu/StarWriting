@@ -15,10 +15,12 @@ import star.starwriting.repository.JpaMemberRepository;
 public class PostRequestDto {
     private String title;
     private String member;
+    private String mainText;
     public Post toEntity(Member member) {
         return Post.builder()
                 .title(this.title)
                 .member(member)
+                .mainText(this.mainText)
                 .build();
     }
 }
