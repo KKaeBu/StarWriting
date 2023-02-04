@@ -30,6 +30,15 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	//	OAuth 라이브러리
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	// 타임리프
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	// junit 테스트
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	// spring security
+	implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.3.3.RELEASE'
+	implementation 'org.springframework.security.oauth:spring-security-oauth2:2.3.3.RELEASE'
 }
 
 tasks.named('test') {
