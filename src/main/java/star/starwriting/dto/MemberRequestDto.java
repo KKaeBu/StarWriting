@@ -7,11 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import star.starwriting.domain.Member;
-
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
