@@ -18,9 +18,9 @@ public class Member implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "member_id", length = 20, nullable = false)
+    @Column(name = "member_id", length = 20, nullable = false, unique = true)
     private String memberId;
-    @Column(length = 20, nullable = false)
+    @Column(length = 100, nullable = false)
     private String password;
     @Column(length = 20, nullable = false)
     private String name;
@@ -31,7 +31,7 @@ public class Member implements Serializable {
     private String email;
     @Column(name = "phone_num")
     private String phoneNum;
-    @Column(length = 10, nullable = false)
+    @Column(length = 15)
     private String nickname;
     private String tier;
     private String address;

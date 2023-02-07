@@ -1,5 +1,6 @@
 package star.starwriting.service;
 
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,20 +19,30 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
+    private final JwtProvider jwtProvider;
 
     @Autowired
-    public PostService(PostRepository postRepository, MemberRepository memberRepository) {
+    public PostService(PostRepository postRepository, MemberRepository memberRepository, JwtProvider jwtProvider) {
         this.postRepository = postRepository;
         this.memberRepository = memberRepository;
+        this.jwtProvider = jwtProvider;
     }
-    public Long join(PostRequestDto postRequestDto){
-        String memberId = postRequestDto.getMember();
-        Member member = memberRepository.findByMemberId(memberId).get();
+    public String post(PostRequestDto postRequestDto,String token){
+        System.out.println("토큰: "+token);
+        boolean claims = jwtProvider.parseJwtToken(token);
+        System.out.println("토큰 진위여부: "+claims);
 
-        Post post = postRequestDto.toEntity(member);
-        postRepository.save(post);
+        if(claims){
+            String memberId = postRequestDto.getMember();
+            Member member = memberRepository.findByMemberId(memberId).get();
 
-        return post.getId();
+            Post post = postRequestDto.toEntity(member);
+            postRepository.save(post);
+
+            return "200";
+        }else{
+            return "400";
+        }
     }
 
     public List<PostResponseDto> findAllPosts() {

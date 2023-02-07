@@ -1,6 +1,8 @@
 package star.starwriting.service;
 
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import star.starwriting.domain.Member;
@@ -16,11 +18,14 @@ import java.util.Optional;
 @Transactional
 public class MemberService {
 
-    private final MemberRepository memberRepository;
 
+    private final MemberRepository memberRepository;
+    private final JwtProvider jwtProvider;
+    private final static int bcryptStrength = 10;
     @Autowired
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository, JwtProvider jwtProvider) {
         this.memberRepository = memberRepository;
+        this.jwtProvider = jwtProvider;
     }
 
     public Long join(MemberRequestDto memberRequestDto) {
@@ -29,6 +34,25 @@ public class MemberService {
 
         memberRepository.save(member);
         return member.getId();
+    }
+
+    public String Login(String inputMemberID, String inputPassword){
+        Member member = memberRepository.findByMemberId(inputMemberID).get();
+        System.out.println("입력한 유저: " + member.getMemberId());
+
+        String hashedPassword = member.getPassword();
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(bcryptStrength);
+        System.out.println("Bcrypt 비밀번호 대조 결과: "+bCryptPasswordEncoder.matches(inputPassword,hashedPassword));
+
+        // 비밀번호가 맞다면
+        if (bCryptPasswordEncoder.matches(inputPassword,hashedPassword)){
+            String token = jwtProvider.createToken(member.getMemberId());
+            boolean claims = jwtProvider.parseJwtToken("Bearer "+ token); // 토큰 검증
+
+            return token;
+        }else {
+            return null;
+        }
     }
 
     public List<MemberResponseDto> findAllMembers() {

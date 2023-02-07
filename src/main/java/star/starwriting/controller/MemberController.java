@@ -1,11 +1,14 @@
 package star.starwriting.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import star.starwriting.domain.Member;
+import star.starwriting.dto.LoginRequestDto;
 import star.starwriting.dto.MemberRequestDto;
 import star.starwriting.dto.MemberResponseDto;
 import star.starwriting.service.MemberService;
 
+import java.net.http.HttpHeaders;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +16,7 @@ import java.util.Optional;
 public class MemberController {
 
     private final MemberService memberService;
-
+    @Autowired
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
@@ -28,8 +31,14 @@ public class MemberController {
         return memberService.findMember(memberId);
     }
 
-    @PostMapping("/api/members")
-    public Long saveMember(@RequestBody MemberRequestDto requestDto) {
+    @PostMapping("/api/signup")
+    public Long SignUp(@RequestBody MemberRequestDto requestDto) {
         return memberService.join(requestDto);
+    }
+
+    @PostMapping("/api/login")
+    public String Login(@RequestBody LoginRequestDto loginRequestDto) {
+        String token = memberService.Login(loginRequestDto.getMemberId(),loginRequestDto.getPassword());
+        return token;
     }
 }

@@ -3,11 +3,13 @@ package star.starwriting.repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import star.starwriting.domain.Member;
 import star.starwriting.dto.MemberRequestDto;
 import star.starwriting.dto.MemberResponseDto;
+import star.starwriting.service.JwtProvider;
 import star.starwriting.service.MemberService;
 import star.starwriting.service.PostService;
 
@@ -29,6 +31,7 @@ class JpaMemberRepositoryTest {
     @Autowired MemberRepository memberRepository;
     @Autowired PostRepository postRepository;
     @Autowired PostService postService;
+    @Autowired JwtProvider jwtProvider;
 
     @Test
     public void 회원가입() throws ParseException {
@@ -53,6 +56,22 @@ class JpaMemberRepositoryTest {
         //then
         MemberResponseDto findMember = memberService.findMember(savedId).get();
         assertThat(member1.getName()).isEqualTo(findMember.getName());
+
+        // 로그인 까지
+
+        String memberId = "hss123";
+        String password = "0000";
+
+        System.out.println(memberService.Login(memberId, password));
+    }
+
+    @Test
+    public void 로그인()throws ParseException{
+        //given
+        String memberId = "hss123";
+        String password = "0000";
+
+        memberService.Login(memberId, password);
     }
 
     @Test
@@ -90,6 +109,7 @@ class JpaMemberRepositoryTest {
 
         assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
     }
+
 
 
 }

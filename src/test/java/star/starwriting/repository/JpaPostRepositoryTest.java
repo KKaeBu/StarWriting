@@ -32,7 +32,7 @@ public class JpaPostRepositoryTest {
         post.setMember(memberId);
         post.setMainText(mainText);
 
-        Long savedId = postService.join(post);
+        String httpState = postService.post(post,"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjc1NzYzMjA0LCJleHAiOjE2NzU4NDk2MDQsInN1YiI6Im9vb28ifQ.PJRR_mhI-5Sr8fGVgEi2xjN-DKDzcSQeaqEQBhYLvmw");
     }
 
     @Test

@@ -6,7 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import star.starwriting.domain.Member;
+import star.starwriting.service.MemberService;
+
 import java.util.Date;
 
 @Data
@@ -30,7 +33,7 @@ public class MemberRequestDto {
     public Member toEntity() {
         return Member.builder()
                 .memberId(this.memberId)
-                .password(this.password)
+                .password(new BCryptPasswordEncoder(10).encode(this.password))
                 .name(this.name)
                 .birthday(this.birthday)
                 .email(this.email)
