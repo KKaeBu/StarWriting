@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import star.starwriting.domain.MemberProfileImage;
 
 import java.util.Date;
 
@@ -19,4 +20,5 @@ public class MemberResponseDto {
     private String nickname;
     private String tier;
     private String createDate;
+    private MemberProfileImage profileImage;
 }

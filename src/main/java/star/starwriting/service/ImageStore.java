@@ -16,7 +16,7 @@ public class ImageStore {
     private final String fileDir = rootPath + "/files/";
 
     public String getFullPath(String filename) {
-        return fileDir + filename;
+        return "static/img/" + filename;
     }
 
     public MemberProfileImage storeImage(MultipartFile multipartFile) throws IOException {

@@ -13,10 +13,12 @@ import star.starwriting.repository.MemberRepository;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -36,33 +38,37 @@ public class MemberService {
         validateDuplicateMember(member);
 
         // 현재 날짜 구하기
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
         // 포맷 정의
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        String formatDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         // 포맷 적용
-        String formatedNow = now.format(formatter);
-        member.setCreateDate(formatedNow);
+        member.setCreateDate(formatDate);
 
         /*
         * 맴버 프로필 기본 이미지 저장하기
         * */
 //        1. 프로젝트 폴더내의 기본 이미지 가져오기
-        File basicImgFile = new File("src/main/resources/static/img/basicProfile.png");
 
-//        2. 해당 파일을 로컬 pc에 저장
-
-
+        String fileUrl = "src/main/resources/static/img/basicProfile.png";
+        File basicImgFile = new File(fileUrl);
 
 //        2. db에 BLOB 방식으로 저장
+        String originalFileName = basicImgFile.getName();
+        String storedImgFileName = "basicProfile" + "." + extractExt(basicImgFile.getName());
 
+        MemberProfileImageDto profileImageDto = new MemberProfileImageDto(
+                originalFileName,
+                storedImgFileName,
+                fileUrl
+        );
+
+        MemberProfileImage profileImage = profileImageDto.toEntity();
+
+        member.setProfileImage(profileImage);
 
         memberRepository.save(member);
-        memberProfileImageRepository.save()
+        memberProfileImageRepository.save(profileImage);
         return member.getId();
-    }
-
-    public Long setProfileImage(MemberProfileImageDto profileImageDto) {
-
     }
 
     public List<MemberResponseDto> findAllMembers() {
@@ -79,7 +85,8 @@ public class MemberService {
                             m.getEmail(),
                             m.getNickname(),
                             m.getTier(),
-                            m.getCreateDate()
+                            m.getCreateDate(),
+                            m.getProfileImage()
                         )
                     );
         }
@@ -90,6 +97,8 @@ public class MemberService {
     public Optional<MemberResponseDto> findMember(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
 
+        System.out.println(member.getProfileImage().getFileUrl());
+
         MemberResponseDto memberResponseDto = new MemberResponseDto(
                 member.getId(),
                 member.getMemberId(),
@@ -97,7 +106,8 @@ public class MemberService {
                 member.getEmail(),
                 member.getNickname(),
                 member.getTier(),
-                member.getCreateDate()
+                member.getCreateDate(),
+                member.getProfileImage()
         );
 
         return Optional.ofNullable(memberResponseDto);
@@ -108,5 +118,10 @@ public class MemberService {
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
+    }
+
+    private String extractExt(String originalFilename) {
+        int pos = originalFilename.lastIndexOf(".");
+        return originalFilename.substring(pos + 1);
     }
 }

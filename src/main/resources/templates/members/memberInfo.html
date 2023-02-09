@@ -25,6 +25,9 @@
       <br/>
       <div th:text="'가입일 : ' + ${member.createDate}"></div>
       <br/>
+      <p>프로필 이미지</p>
+      <img th:src="@{/api/img/} + ${member.profileImage.storedFileName}" width="100px" height="100px" style="border-color: black; border-style: solid; border-width: thin;"/>
+      <br/>
     </div>
   </div>
 </div>

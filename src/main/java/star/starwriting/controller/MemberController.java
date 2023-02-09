@@ -1,5 +1,6 @@
 package star.starwriting.controller;
 
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,9 +10,12 @@ import star.starwriting.domain.MemberProfileImage;
 import star.starwriting.dto.MemberProfileImageDto;
 import star.starwriting.dto.MemberRequestDto;
 import star.starwriting.dto.MemberResponseDto;
+import star.starwriting.service.ImageStore;
 import star.starwriting.service.MemberService;
 
+import javax.annotation.Resource;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +49,13 @@ public class MemberController {
         MemberResponseDto member = memberService.findMember(memberId).get();
         model.addAttribute("member", member);
         return "members/memberInfo";
+    }
+
+    @ResponseBody
+    @GetMapping("/api/img/{filename}")
+    public Resource showImage(@PathVariable String filename) throws MalformedURLException {
+        ImageStore imageStore = new ImageStore();
+        return (Resource) new UrlResource("file:" + imageStore.getFullPath(filename));
     }
 
 //    회원 가입 화면
