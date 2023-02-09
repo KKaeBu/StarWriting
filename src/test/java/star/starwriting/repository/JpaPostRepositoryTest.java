@@ -4,11 +4,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import star.starwriting.dto.LoginRequestDto;
 import star.starwriting.dto.PostRequestDto;
 import star.starwriting.dto.PostResponseDto;
 import star.starwriting.service.MemberService;
 import star.starwriting.service.PostService;
 
+import java.text.ParseException;
 import java.util.List;
 
 @SpringBootTest
@@ -22,6 +24,13 @@ public class JpaPostRepositoryTest {
     @Test
     public void 글작성() {
         //given
+        //로그인 - 미리 만들어둔 테스트용 멤버
+        String loginMemberId = "oooo";
+        String loginPassword = "1234";
+        LoginRequestDto loginRequestDto = new LoginRequestDto(loginMemberId,loginPassword);
+
+        String testToken = "Bearer "+memberService.Login(loginRequestDto.getMemberId(), loginRequestDto.getPassword());
+
         PostRequestDto post = new PostRequestDto();
 
         String title = "테스트코드 제목";
@@ -32,7 +41,11 @@ public class JpaPostRepositoryTest {
         post.setMember(memberId);
         post.setMainText(mainText);
 
-        String httpState = postService.post(post,"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjc1NzYzMjA0LCJleHAiOjE2NzU4NDk2MDQsInN1YiI6Im9vb28ifQ.PJRR_mhI-5Sr8fGVgEi2xjN-DKDzcSQeaqEQBhYLvmw");
+        if(postService.post(post,testToken)){
+            System.out.println("글 작성 테스트 성공");
+        }else{
+            System.out.println("글 작성 테스트 실패");
+        }
     }
 
     @Test

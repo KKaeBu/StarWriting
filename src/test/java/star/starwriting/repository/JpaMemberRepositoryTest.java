@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2Res
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import star.starwriting.domain.Member;
+import star.starwriting.dto.LoginRequestDto;
 import star.starwriting.dto.MemberRequestDto;
 import star.starwriting.dto.MemberResponseDto;
 import star.starwriting.service.JwtProvider;
@@ -34,8 +35,9 @@ class JpaMemberRepositoryTest {
     @Autowired JwtProvider jwtProvider;
 
     @Test
-    public void 회원가입() throws ParseException {
+    public void 회원가입과로그인() throws ParseException {
         //given
+        //회원가입
         MemberRequestDto member1 = new MemberRequestDto();
 
         String dateStr = "2022-05-05";
@@ -57,12 +59,12 @@ class JpaMemberRepositoryTest {
         MemberResponseDto findMember = memberService.findMember(savedId).get();
         assertThat(member1.getName()).isEqualTo(findMember.getName());
 
-        // 로그인 까지
+        //로그인
+        String loginMemberId = "hss123";
+        String loginPassword = "0000";
+        LoginRequestDto loginRequestDto = new LoginRequestDto(loginMemberId,loginPassword);
 
-        String memberId = "hss123";
-        String password = "0000";
-
-        System.out.println(memberService.Login(memberId, password));
+        System.out.println("토큰: "+memberService.Login(loginRequestDto.getMemberId(), loginRequestDto.getPassword()));
     }
 
     @Test

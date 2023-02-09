@@ -27,7 +27,7 @@ public class MemberService {
         this.memberRepository = memberRepository;
         this.jwtProvider = jwtProvider;
     }
-
+    /* 새로운 member 추가 함수*/
     public Long join(MemberRequestDto memberRequestDto) {
         Member member = memberRequestDto.toEntity();
         validateDuplicateMember(member);
@@ -36,10 +36,17 @@ public class MemberService {
         return member.getId();
     }
 
+    /* 로그인 함수 */
     public String Login(String inputMemberID, String inputPassword){
         Member member = memberRepository.findByMemberId(inputMemberID).get();
         System.out.println("입력한 유저: " + member.getMemberId());
 
+        if(member.getMemberId() == null){
+            System.out.println("잘못된 사용자 입력됨.");
+            return null;
+        }
+
+        // Bcrypt 암호화
         String hashedPassword = member.getPassword();
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(bcryptStrength);
         System.out.println("Bcrypt 비밀번호 대조 결과: "+bCryptPasswordEncoder.matches(inputPassword,hashedPassword));
@@ -48,13 +55,14 @@ public class MemberService {
         if (bCryptPasswordEncoder.matches(inputPassword,hashedPassword)){
             String token = jwtProvider.createToken(member.getMemberId());
             boolean claims = jwtProvider.parseJwtToken("Bearer "+ token); // 토큰 검증
-
             return token;
         }else {
+            System.out.println("잘못된 비밀번호 입력됨.");
             return null;
         }
     }
 
+    /* 모든 member 반환 */
     public List<MemberResponseDto> findAllMembers() {
         List<Member> memberList = memberRepository.findAll();
         List<MemberResponseDto> memberResponseDtoList = new ArrayList<>();
@@ -71,6 +79,7 @@ public class MemberService {
         return memberResponseDtoList;
     }
 
+    /* memberId로 유저 검색 (memberId 속성은 Unique이기에, 중복 x) */
     public Optional<MemberResponseDto> findMember(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
 
@@ -81,6 +90,7 @@ public class MemberService {
         return Optional.ofNullable(memberResponseDto);
     }
 
+    /* 중복 member 조회 */
     private void validateDuplicateMember(Member member) {
         memberRepository.findByName(member.getName())
                 .ifPresent(m -> {

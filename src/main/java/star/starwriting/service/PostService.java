@@ -27,8 +27,9 @@ public class PostService {
         this.memberRepository = memberRepository;
         this.jwtProvider = jwtProvider;
     }
-    public String post(PostRequestDto postRequestDto,String token){
-        System.out.println("토큰: "+token);
+
+    /* post 작성 함수 */
+    public boolean post(PostRequestDto postRequestDto,String token){
         boolean claims = jwtProvider.parseJwtToken(token);
         System.out.println("토큰 진위여부: "+claims);
 
@@ -39,12 +40,13 @@ public class PostService {
             Post post = postRequestDto.toEntity(member);
             postRepository.save(post);
 
-            return "200";
+            return true;
         }else{
-            return "400";
+            return false;
         }
     }
 
+    /* 모든 post 조회 */
     public List<PostResponseDto> findAllPosts() {
         List<Post> postList = postRepository.findAll();
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();

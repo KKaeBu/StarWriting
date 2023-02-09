@@ -33,7 +33,7 @@ public class MemberRequestDto {
     public Member toEntity() {
         return Member.builder()
                 .memberId(this.memberId)
-                .password(new BCryptPasswordEncoder(10).encode(this.password))
+                .password(new BCryptPasswordEncoder(10).encode(this.password)) /* password Bcrypt로 암호화 후 DB에 저장 */
                 .name(this.name)
                 .birthday(this.birthday)
                 .email(this.email)

@@ -23,7 +23,7 @@ public class Post {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id", nullable = false, referencedColumnName = "member_id")
-    private Member member; // 외래키 설정해야함
+    private Member member; // 외래키
 
     @Column(length = 20, nullable = false)
     private String title;
@@ -33,10 +33,10 @@ public class Post {
 
     @Column(name = "posting_date")
     @CreationTimestamp
-    private Date postingDate; // default값으로 작성 시간 자동 추가 해야댐 *일단함
+    private Date postingDate; // default값으로 글 작성시간 자동으로 추가
 
     @ColumnDefault("0")
-    private Long view; // 얘도 조회수는 default값으로 0부터 해야댐
+    private Long view; // 얘도 조회수는 default값으로 0부터
 
     @Column(name = "shared_num")
     @ColumnDefault("0")
