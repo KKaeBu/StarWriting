@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import star.starwriting.domain.Member;
+import star.starwriting.domain.MemberProfileImage;
 
 import javax.persistence.Column;
 import java.util.Date;
@@ -23,6 +24,7 @@ public class MemberRequestDto {
     private String nickname;
     private String address;
     private String sex;
+    private MemberProfileImageDto profileImage;
 
     public Member toEntity() {
         return Member.builder()

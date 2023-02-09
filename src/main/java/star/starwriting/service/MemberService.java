@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import star.starwriting.domain.Member;
+import star.starwriting.domain.MemberProfileImage;
+import star.starwriting.dto.MemberProfileImageDto;
 import star.starwriting.dto.MemberRequestDto;
 import star.starwriting.dto.MemberResponseDto;
 import star.starwriting.repository.MemberProfileImageRepository;
 import star.starwriting.repository.MemberRepository;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -35,14 +38,31 @@ public class MemberService {
         // 현재 날짜 구하기
         LocalDate now = LocalDate.now();
         // 포맷 정의
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         // 포맷 적용
         String formatedNow = now.format(formatter);
-
         member.setCreateDate(formatedNow);
 
+        /*
+        * 맴버 프로필 기본 이미지 저장하기
+        * */
+//        1. 프로젝트 폴더내의 기본 이미지 가져오기
+        File basicImgFile = new File("src/main/resources/static/img/basicProfile.png");
+
+//        2. 해당 파일을 로컬 pc에 저장
+
+
+
+//        2. db에 BLOB 방식으로 저장
+
+
         memberRepository.save(member);
+        memberProfileImageRepository.save()
         return member.getId();
+    }
+
+    public Long setProfileImage(MemberProfileImageDto profileImageDto) {
+
     }
 
     public List<MemberResponseDto> findAllMembers() {

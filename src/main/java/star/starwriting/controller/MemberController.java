@@ -3,11 +3,15 @@ package star.starwriting.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import star.starwriting.domain.Member;
+import star.starwriting.domain.MemberProfileImage;
+import star.starwriting.dto.MemberProfileImageDto;
 import star.starwriting.dto.MemberRequestDto;
 import star.starwriting.dto.MemberResponseDto;
 import star.starwriting.service.MemberService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +52,7 @@ public class MemberController {
     public String saveMember(MemberRequestDto requestDto) {
 //        return memberService.join(requestDto);
         memberService.join(requestDto);
-        return "redirect:/";
+        return "members/signUpForm";
     }
+
 }

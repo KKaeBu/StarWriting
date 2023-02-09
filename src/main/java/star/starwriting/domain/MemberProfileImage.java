@@ -3,6 +3,8 @@ package star.starwriting.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.File;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,4 +23,20 @@ public class MemberProfileImage {
     private String storeFileName;
     @Column(name = "file_url")
     private String fileUrl;
+
+    @PrePersist
+    public void prePersist(){
+        String imgFileUrl = "src/main/resources/static/img/basicProfile.png"
+        File basicImgFile = new File("src/main/resources/static/img/basicProfile.png");
+        String storedImgFileName = UUID.randomUUID() + "." + extractExt(basicImgFile.getName());
+
+        this.originalFileName = this.originalFileName == null ? basicImgFile.getName() : this.originalFileName;
+        this.storeFileName = this.storeFileName == null ? storedImgFileName : this.storeFileName;
+        this.fileUrl = this.fileUrl == null ? imgFileUrl : this.fileUrl;
+    }
+
+    private String extractExt(String originalFilename) {
+        int pos = originalFilename.lastIndexOf(".");
+        return originalFilename.substring(pos + 1);
+    }
 }
