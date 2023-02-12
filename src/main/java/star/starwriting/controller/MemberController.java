@@ -1,5 +1,6 @@
 package star.starwriting.controller;
 
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,7 +56,8 @@ public class MemberController {
     @GetMapping("/api/img/{filename}")
     public Resource showImage(@PathVariable String filename) throws MalformedURLException {
         ImageStore imageStore = new ImageStore();
-        return (Resource) new UrlResource("file:" + imageStore.getFullPath(filename));
+        Resource resource = (Resource) new UrlResource("file:" + imageStore.getFullPath(filename));
+        return resource;
     }
 
 //    회원 가입 화면
