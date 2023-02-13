@@ -3,6 +3,7 @@ package star.starwriting.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import star.starwriting.domain.Member;
 import star.starwriting.domain.MemberProfileImage;
 import star.starwriting.dto.MemberProfileImageDto;
@@ -12,6 +13,7 @@ import star.starwriting.repository.MemberProfileImageRepository;
 import star.starwriting.repository.MemberRepository;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,14 +28,16 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberProfileImageRepository memberProfileImageRepository;
+    private final ImageStore imageStore;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository, MemberProfileImageRepository memberProfileImageRepository) {
+    public MemberService(MemberRepository memberRepository, MemberProfileImageRepository memberProfileImageRepository,ImageStore imageStore) {
         this.memberRepository = memberRepository;
         this.memberProfileImageRepository = memberProfileImageRepository;
+        this.imageStore = imageStore;
     }
 
-    public Long join(MemberRequestDto memberRequestDto) {
+    public Long join(MemberRequestDto memberRequestDto, MultipartFile file) throws IOException {
         Member member = memberRequestDto.toEntity();
         validateDuplicateMember(member);
 
@@ -44,30 +48,9 @@ public class MemberService {
         // 포맷 적용
         member.setCreateDate(formatDate);
 
-        /*
-        * 맴버 프로필 기본 이미지 저장하기
-        * */
-//        1. 프로젝트 폴더내의 기본 이미지 가져오기
-
-        String fileUrl = "src/main/resources/static/img/basicProfile.png";
-        File basicImgFile = new File(fileUrl);
-
-//        2. db에 BLOB 방식으로 저장
-        String originalFileName = basicImgFile.getName();
-        String storedImgFileName = "basicProfile" + "." + extractExt(basicImgFile.getName());
-
-        MemberProfileImageDto profileImageDto = new MemberProfileImageDto(
-                originalFileName,
-                storedImgFileName,
-                fileUrl
-        );
-
-        MemberProfileImage profileImage = profileImageDto.toEntity();
-
-        member.setProfileImage(profileImage);
+        imageStore.storeImage(file,member); // 이미지를 로컬에 저장 후 DB 에도 이미지의 정보 저장
 
         memberRepository.save(member);
-        memberProfileImageRepository.save(profileImage);
         return member.getId();
     }
 

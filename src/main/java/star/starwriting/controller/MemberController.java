@@ -1,5 +1,6 @@
 package star.starwriting.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import star.starwriting.service.ImageStore;
 import star.starwriting.service.MemberService;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
@@ -24,10 +26,15 @@ import java.util.Optional;
 public class MemberController {
 
     private final MemberService memberService;
+    private final ImageStore imageStore;
 
-    public MemberController(MemberService memberService) {
+    @Autowired
+    public MemberController(MemberService memberService, ImageStore imageStore) {
         this.memberService = memberService;
+        this.imageStore = imageStore;
     }
+
+
 
 //    홈 화면
     @GetMapping(value = {"", "/"})
@@ -52,19 +59,21 @@ public class MemberController {
         return "members/memberInfo";
     }
 
-    @ResponseBody
-    @GetMapping("/api/img/{filename}")
-    public Resource showImage(@PathVariable String filename) throws MalformedURLException {
-        ImageStore imageStore = new ImageStore();
-        Resource resource = (Resource) new UrlResource("file:" + imageStore.getFullPath(filename));
-        return resource;
-    }
+//    @ResponseBody
+//    @GetMapping("/img/{filename}")
+//    public Resource showImage(@PathVariable String filename) throws MalformedURLException {
+//        Resource resource = (Resource) new UrlResource("file:" + imageStore.getFullPath(filename));
+//        return resource;
+//    }
 
 //    회원 가입 화면
     @PostMapping("/api/members")
-    public String saveMember(MemberRequestDto requestDto) {
-//        return memberService.join(requestDto);
-        memberService.join(requestDto);
+    public String saveMember(MemberRequestDto requestDto, @RequestParam MultipartFile file)throws IOException {
+//        imageStore.storeImage(file);
+//        String fullPath = "C:\\Users\\82109\\Desktop\\웹\\StarWriting\\src\\main\\resources\\img\\" + file.getOriginalFilename();
+//        file.transferTo(new File(fullPath));
+
+        memberService.join(requestDto, file);
         return "members/signUpForm";
     }
 
