@@ -2,10 +2,12 @@ package star.starwriting.domain;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Getter
@@ -15,22 +17,25 @@ import java.util.Date;
 @NoArgsConstructor
 @Table(name = "member_tb")
 @Entity
-public class Member {
+public class Member implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "member_id", length = 20, nullable = false)
+    @Column(name = "member_id", length = 20, nullable = false, unique = true)
     private String memberId;
-    @Column(length = 20, nullable = false)
+    @Column(length = 200, nullable = false)
     private String password;
     @Column(length = 20, nullable = false)
     private String name;
     @Column()
-    private String birthday;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date birthday;
+    @Column(nullable = false)
     private String email;
     @Column(name = "phone_num")
     private String phoneNum;
-    @Column(length = 10, nullable = false)
+    @Column(length = 15)
     private String nickname;
     private String tier;
     private String address;

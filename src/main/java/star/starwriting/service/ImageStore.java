@@ -33,7 +33,7 @@ public class ImageStore {
     public MemberProfileImage storeImage(MultipartFile file, Member member) throws IOException {
 
         // 프로필 이미지 저장
-        if(file.isEmpty()) {
+        if(file == null) {
             return null;
         }
 
