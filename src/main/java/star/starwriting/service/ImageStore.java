@@ -58,7 +58,7 @@ public class ImageStore {
 
         MemberProfileImage profileImage = profileImageDto.toEntity();
         memberProfileImageRepository.save(profileImage);
-        member.setProfileImage(profileImage); // 이게 될지는 의문. member 객체를 파라미터로 넘겨, 다른 클래스의 함수에서 set 함수가 정상적으로 작동되는지 모르겠음
+        member.setProfileImage(profileImage); // 회원가입한 멤버의 profileImage에 저장한 이미지를 할당
 
         return profileImage;
     }

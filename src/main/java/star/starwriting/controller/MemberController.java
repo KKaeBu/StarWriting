@@ -46,33 +46,20 @@ public class MemberController {
 //    회원 목록 조회 화면
     @GetMapping("/api/members")
     public String getMemberList() {
-//        return memberService.findAllMembers();
         return "members/signUpForm";
     }
 
 //    회원 정보 화면
     @GetMapping("/api/members/{id}")
     public String getMember(@PathVariable("id") Long memberId, Model model) {
-//        return memberService.findMember(memberId);
         MemberResponseDto member = memberService.findMember(memberId).get();
         model.addAttribute("member", member);
         return "members/memberInfo";
     }
 
-//    @ResponseBody
-//    @GetMapping("/img/{filename}")
-//    public Resource showImage(@PathVariable String filename) throws MalformedURLException {
-//        Resource resource = (Resource) new UrlResource("file:" + imageStore.getFullPath(filename));
-//        return resource;
-//    }
-
 //    회원 가입 화면
     @PostMapping("/api/members")
     public String saveMember(MemberRequestDto requestDto, @RequestParam MultipartFile file)throws IOException {
-//        imageStore.storeImage(file);
-//        String fullPath = "C:\\Users\\82109\\Desktop\\웹\\StarWriting\\src\\main\\resources\\img\\" + file.getOriginalFilename();
-//        file.transferTo(new File(fullPath));
-
         memberService.join(requestDto, file);
         return "members/signUpForm";
     }
