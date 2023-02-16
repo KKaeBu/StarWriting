@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/style.css">
+  <title>회원 정보</title>
+  <nav>회원 정보 화면</nav>
+</head>
+<body>
+<div>
+  <br/>
+  <div align="center">
+    <div class="form-group" align="left">
+      <div th:text="'회원번호 : ' + ${member.id}"></div>
+      <br/>
+      <div th:text="'아이디 : ' + ${member.memberId}"></div>
+      <br/>
+      <div th:text="'이름 : ' + ${member.name}"></div>
+      <br/>
+      <div th:text="'닉네임 : ' + ${member.nickname}"></div>
+      <br/>
+      <div th:text="'이메일 : ' + ${member.email}"></div>
+      <br/>
+      <div th:text="'티어 : ' + ${member.tier}"></div>
+      <br/>
+      <div th:text="'가입일 : ' + ${member.createDate}"></div>
+      <br/>
+      <p>프로필 이미지</p>
+      <img th:src="@{/img/} + ${member.profileImage.storeFileName}" width="100px" height="100px" style="border-color: black; border-style: solid; border-width: thin;"/>
+      <br/>
+    </div>
+  </div>
+</div>
+</body>
+</html>
