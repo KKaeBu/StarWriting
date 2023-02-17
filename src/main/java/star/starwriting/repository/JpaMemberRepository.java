@@ -3,6 +3,7 @@ package star.starwriting.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import star.starwriting.domain.Member;
+import star.starwriting.domain.Post;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -20,6 +21,11 @@ public class JpaMemberRepository implements MemberRepository{
     @Override
     public Member save(Member member) {
         em.persist(member);
+        return member;
+    }
+    @Override
+    public Member update(Member member) {
+        em.merge(member);
         return member;
     }
 

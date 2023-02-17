@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import star.starwriting.domain.Member;
 import star.starwriting.domain.MemberProfileImage;
-import star.starwriting.dto.MemberProfileImageDto;
-import star.starwriting.dto.LoginRequestDto;
-import star.starwriting.dto.MemberRequestDto;
-import star.starwriting.dto.MemberResponseDto;
+import star.starwriting.domain.Post;
+import star.starwriting.dto.*;
 import star.starwriting.service.ImageStore;
 import star.starwriting.service.MemberService;
 
@@ -23,7 +21,9 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -66,6 +66,19 @@ public class MemberController {
         return "members/signUpForm";
     }
 
+    @PostMapping("/api/like")
+    @ResponseBody
+    public ResponseEntity<String> like(@RequestBody LikeRequestDto likeRequestDto) {
+        memberService.like(likeRequestDto);
+        return new ResponseEntity<>("좋아요 성공", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/api/like")
+    @ResponseBody
+    public ResponseEntity<List<Post>> likeList(@RequestBody LikeRequestDto likeRequestDto){
+        List<Post> likePosts = memberService.likeList(likeRequestDto);
+        return new ResponseEntity<List<Post>>(likePosts,HttpStatus.ACCEPTED);
+    }
     // 로그인
     @PostMapping("/api/login")
     public ResponseEntity<HttpHeaders> Login(@RequestBody LoginRequestDto loginRequestDto) {

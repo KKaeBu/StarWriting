@@ -8,7 +8,9 @@ import java.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -43,15 +45,19 @@ public class Member implements Serializable {
     private String sex;
     @Column(name = "create_date")
     private String createDate;
-//    이미지 파일
-
+    // 이미지 파일
     @OneToOne
     @JoinColumn(name = "profile_image")
     private MemberProfileImage profileImage;
 
-//    데이터 기본값을 설정해주기 위한 어노테이션 및 메소드
+    @OneToMany
+    @JoinColumn(name = "like_post", referencedColumnName = "id")
+    private List<Post> likePost;
+
+    // 데이터 기본값을 설정해주기 위한 어노테이션 및 메소드
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
+
         this.tier = this.tier == null ? "BRONZE" : this.tier;
     }
 }

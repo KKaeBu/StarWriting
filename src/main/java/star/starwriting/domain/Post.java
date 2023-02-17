@@ -6,7 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @DynamicInsert
 @Getter
@@ -41,6 +43,7 @@ public class Post {
     @Column(name = "shared_num")
     @ColumnDefault("0")
     private Long sharedNum; // 글 공유 횟수
+
 //    @Column(nullable = false)
 //    private boolean approved; // 글 게시 승인 여부 근데 이런거 없애도 될듯..?? 프로젝트 규모 줄이기 일환으로
 //    @Column(nullable = false, length = 20)

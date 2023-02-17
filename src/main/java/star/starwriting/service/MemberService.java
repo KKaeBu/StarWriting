@@ -1,28 +1,25 @@
 package star.starwriting.service;
 
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import star.starwriting.domain.Member;
-import star.starwriting.domain.MemberProfileImage;
-import star.starwriting.dto.MemberProfileImageDto;
+import star.starwriting.domain.Post;
+import star.starwriting.dto.LikeRequestDto;
 import star.starwriting.dto.MemberRequestDto;
 import star.starwriting.dto.MemberResponseDto;
 import star.starwriting.repository.MemberProfileImageRepository;
 import star.starwriting.repository.MemberRepository;
+import star.starwriting.repository.PostRepository;
 
-import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -30,17 +27,19 @@ public class MemberService {
 
 
     private final MemberRepository memberRepository;
+    private final PostRepository postRepository;
     private final MemberProfileImageRepository memberProfileImageRepository;
     private final ImageStore imageStore;
     private final JwtProvider jwtProvider;
     private final static int bcryptStrength = 10;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository, MemberProfileImageRepository memberProfileImageRepository,ImageStore imageStore, JwtProvider jwtProvider) {
+    public MemberService(MemberRepository memberRepository,PostRepository postRepository, MemberProfileImageRepository memberProfileImageRepository,ImageStore imageStore, JwtProvider jwtProvider) {
         this.memberRepository = memberRepository;
         this.memberProfileImageRepository = memberProfileImageRepository;
         this.imageStore = imageStore;
         this.jwtProvider = jwtProvider;
+        this.postRepository = postRepository;
     }
 
     /* 새로운 member 추가 함수*/
@@ -84,6 +83,28 @@ public class MemberService {
             System.out.println("잘못된 비밀번호 입력됨.");
             return null;
         }
+    }
+
+    public Member like(LikeRequestDto likeRequestDto) {
+        String memberId = likeRequestDto.getMemberId();
+        Long postId = likeRequestDto.getPostId();
+        System.out.println("memberId: "+memberId);
+        Member member = memberRepository.findByMemberId(memberId).get();
+        Post post = postRepository.findById(postId).get();
+
+        member.getLikePost().add(post);
+        memberRepository.update(member);
+
+        return member;
+    }
+
+    public List<Post> likeList(LikeRequestDto likeRequestDto){
+        Member member = memberRepository.findByMemberId(likeRequestDto.getMemberId()).get();
+        List<Post> likePost = member.getLikePost();
+        for(Post post:likePost){
+            System.out.println(post.getId());
+        }
+        return likePost;
     }
 
     /* 모든 member 반환 */
