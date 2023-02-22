@@ -1,5 +1,6 @@
 package star.starwriting.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
@@ -50,6 +51,7 @@ public class Member implements Serializable {
     @JoinColumn(name = "profile_image")
     private MemberProfileImage profileImage;
 
+    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "like_post", referencedColumnName = "id")
     private List<Post> likePost;
@@ -57,7 +59,6 @@ public class Member implements Serializable {
     // 데이터 기본값을 설정해주기 위한 어노테이션 및 메소드
     @PrePersist
     public void prePersist() {
-
         this.tier = this.tier == null ? "BRONZE" : this.tier;
     }
 }

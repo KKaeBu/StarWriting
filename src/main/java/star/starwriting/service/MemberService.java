@@ -88,7 +88,6 @@ public class MemberService {
     public Member like(LikeRequestDto likeRequestDto) {
         String memberId = likeRequestDto.getMemberId();
         Long postId = likeRequestDto.getPostId();
-        System.out.println("memberId: "+memberId);
         Member member = memberRepository.findByMemberId(memberId).get();
         Post post = postRepository.findById(postId).get();
 
@@ -101,9 +100,11 @@ public class MemberService {
     public List<Post> likeList(LikeRequestDto likeRequestDto){
         Member member = memberRepository.findByMemberId(likeRequestDto.getMemberId()).get();
         List<Post> likePost = member.getLikePost();
-        for(Post post:likePost){
-            System.out.println(post.getId());
-        }
+
+        System.out.println(likePost);
+//        for(Post post:likePost){
+//            System.out.println(post.getId());
+//        }
         return likePost;
     }
 
