@@ -43,7 +43,7 @@ public class ImageStore {
         String storeFileName = UUID.randomUUID() + "." + extractExt(originalFilename);
 //        String storeFileName = file.getOriginalFilename();
         String fileUrl = "src/main/resources/static/img/"+storeFileName;
-        String fullPath = "C:\\Users\\82109\\Desktop\\웹\\StarWriting\\src\\main\\resources\\static\\img\\" + storeFileName;
+        String fullPath = "C:\\Users\\82108\\Desktop\\study\\StarWriting\\src\\main\\resources\\static\\img" + storeFileName;
 
         // 파일을 저장하는 부분 -> 파일경로 + storeFilename 에 저장
         file.transferTo(new File(fullPath));
