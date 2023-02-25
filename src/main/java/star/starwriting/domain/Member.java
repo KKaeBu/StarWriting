@@ -51,6 +51,19 @@ public class Member implements Serializable {
     @JoinColumn(name = "profile_image")
     private MemberProfileImage profileImage;
 
+    // following member
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "following_member")
+    private List<Member> followingMember;
+
+    // followed member
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "followed_member")
+    private List<Member> followedMember;
+
+    // Post 좋아요
     @JsonIgnore
     @OneToMany
     @JoinColumn(name = "like_post", referencedColumnName = "id")
