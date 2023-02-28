@@ -24,7 +24,7 @@ public class ImageStore {
     // 루트 경로 불러오기
     private final String rootPath = System.getProperty("user.dir");
     // 프로젝트 루트 경로에 있는 files 디렉토리
-    private final String fileDir = rootPath + "/files/";
+    private final String fileDir = rootPath + PathSeperator("/src/main/resources/static/img/");
 
     public String getFullPath(String filename) {
         return "/img/" + filename;
@@ -42,8 +42,10 @@ public class ImageStore {
         // 파일명을 중복되지 않게끔 UUID로 정하고 ".확장자"는 그대로
         String storeFileName = UUID.randomUUID() + "." + extractExt(originalFilename);
 //        String storeFileName = file.getOriginalFilename();
-        String fileUrl = "src/main/resources/static/img/"+storeFileName;
-        String fullPath = "C:\\Users\\82108\\Desktop\\study\\StarWriting\\src\\main\\resources\\static\\img" + storeFileName;
+        String fileUrl = PathSeperator("src/main/resources/static/img/") +storeFileName;
+        String fullPath = fileDir + storeFileName;
+
+        System.out.println("파일경로: " + fileDir);
 
         // 파일을 저장하는 부분 -> 파일경로 + storeFilename 에 저장
         file.transferTo(new File(fullPath));
@@ -67,6 +69,13 @@ public class ImageStore {
     private String extractExt(String originalFilename) {
         int pos = originalFilename.lastIndexOf(".");
         return originalFilename.substring(pos + 1);
+    }
+
+    private String PathSeperator(String path) {
+        String[] split = path.split("/");
+        String joinPath = File.separator + String.join(File.separator, split) + File.separator;
+
+        return joinPath;
     }
 
 }
