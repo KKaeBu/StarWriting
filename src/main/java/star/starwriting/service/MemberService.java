@@ -29,14 +29,16 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final MemberProfileImageRepository memberProfileImageRepository;
+    private final DirManager dirManager;
     private final ImageStore imageStore;
     private final JwtProvider jwtProvider;
     private final static int bcryptStrength = 10;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository,PostRepository postRepository, MemberProfileImageRepository memberProfileImageRepository,ImageStore imageStore, JwtProvider jwtProvider) {
+    public MemberService(MemberRepository memberRepository, PostRepository postRepository, MemberProfileImageRepository memberProfileImageRepository, DirManager dirManager, ImageStore imageStore, JwtProvider jwtProvider) {
         this.memberRepository = memberRepository;
         this.memberProfileImageRepository = memberProfileImageRepository;
+        this.dirManager = dirManager;
         this.imageStore = imageStore;
         this.jwtProvider = jwtProvider;
         this.postRepository = postRepository;
@@ -54,8 +56,11 @@ public class MemberService {
         // 포맷 적용
         member.setCreateDate(formatDate);
 
-        imageStore.storeImage(file,member); // 이미지를 로컬에 저장 후 DB 에도 이미지의 정보 저장
         memberRepository.save(member);
+        // 회원가입시 static/members 폴더내에 해당 맴버 폴더 생성
+        // 순서가 중요 데베에 먼저 저장되야 getId()를 사용 가능 (이전에 하면 null값 반환)
+        dirManager.makeMemberDir(member.getId());
+        imageStore.storeImage(file,member); // 이미지를 로컬에 저장 후 DB 에도 이미지의 정보 저장
         return member.getId();
     }
 
@@ -162,4 +167,5 @@ public class MemberService {
         int pos = originalFilename.lastIndexOf(".");
         return originalFilename.substring(pos + 1);
     }
+
 }
