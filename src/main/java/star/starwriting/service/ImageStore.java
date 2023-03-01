@@ -32,6 +32,21 @@ public class ImageStore {
 
     public MemberProfileImage storeImage(MultipartFile file, Member member) throws IOException {
 
+        // 멤버별 폴더 생성 -> 해당 멤버명 폴더가 없다면 생성한다.
+        String folderPath = "C:\\Users\\82109\\Desktop\\웹\\StarWriting\\src\\main\\resources\\static\\img\\"+member.getMemberId();
+        File folder = new File(folderPath);
+
+        if(!folder.exists()){
+            try {
+                folder.mkdir();
+                System.out.println(member.getMemberId() + "의 폴더가 생성되었습니다.");
+            } catch (Exception e) {
+                e.getStackTrace();
+            }
+        }else{
+            System.out.println(member.getMemberId()+"의 폴더가 이미 존재합니다.");
+        }
+
         // 프로필 이미지 저장
 
         // MultipartFile은 null이 아니라 isEmpty로 null체크
@@ -60,8 +75,8 @@ public class ImageStore {
         // 파일명을 중복되지 않게끔 UUID로 정하고 ".확장자"는 그대로
         String storeFileName = UUID.randomUUID() + "." + extractExt(originalFilename);
 //      String storeFileName = file.getOriginalFilename();
-        String fileUrl = "src/main/resources/static/img/"+storeFileName;
-        String fullPath = "C:\\Users\\82109\\Desktop\\웹\\StarWriting\\src\\main\\resources\\static\\img\\" + storeFileName;
+        String fileUrl = "src/main/resources/static/img/"+member.getMemberId()+"/"+storeFileName;
+        String fullPath = "C:\\Users\\82109\\Desktop\\웹\\StarWriting\\src\\main\\resources\\static\\img\\"+member.getMemberId()+"\\" + storeFileName;
 
 
         // 파일을 저장하는 부분 -> 파일경로 + storeFilename 에 저장

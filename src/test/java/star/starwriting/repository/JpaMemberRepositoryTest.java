@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import star.starwriting.domain.Member;
 import star.starwriting.dto.LoginRequestDto;
+import star.starwriting.dto.MemberProfileImageDto;
 import star.starwriting.dto.MemberRequestDto;
 import star.starwriting.dto.MemberResponseDto;
 import star.starwriting.service.JwtProvider;
@@ -16,6 +18,7 @@ import star.starwriting.service.PostService;
 
 import javax.persistence.EntityManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,7 +57,8 @@ class JpaMemberRepositoryTest {
         member1.setNickname("한승");
         member1.setSex("남");
         //when
-        Long savedId = memberService.join(member1,null);
+
+        Long savedId = memberService.join(member1, null);
 
         //then
         MemberResponseDto findMember = memberService.findMember(savedId).get();
