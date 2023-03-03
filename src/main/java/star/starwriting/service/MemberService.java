@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import star.starwriting.domain.Member;
 import star.starwriting.domain.Post;
+import star.starwriting.dto.FollowRequestDto;
 import star.starwriting.dto.LikeRequestDto;
 import star.starwriting.dto.MemberRequestDto;
 import star.starwriting.dto.MemberResponseDto;
@@ -96,9 +97,21 @@ public class MemberService {
         Member member = memberRepository.findByMemberId(memberId).get();
         Post post = postRepository.findById(postId).get();
 
-        member.getLikePost().add(post);
-        memberRepository.update(member);
+        List<Post> likePosts = member.getLikePost();
+        boolean isAlreadyLike = false; // 이미 좋아요를 한 상태라면 좋아요 취소
 
+        for(Post likePost:likePosts){
+            if(likePost.getId() == postId){
+                isAlreadyLike = true;
+            }
+        }
+        if(!isAlreadyLike){
+            member.getLikePost().add(post);
+            memberRepository.update(member);
+        }else{
+            member.getLikePost().remove(post);
+            memberRepository.update(member);
+        }
         return member;
     }
 
@@ -106,11 +119,46 @@ public class MemberService {
         Member member = memberRepository.findByMemberId(likeRequestDto.getMemberId()).get();
         List<Post> likePost = member.getLikePost();
 
-        System.out.println(likePost);
-//        for(Post post:likePost){
-//            System.out.println(post.getId());
-//        }
+
         return likePost;
+    }
+
+    public List<Member> follow(FollowRequestDto followRequestDto){
+        Member followedMember = memberRepository.findByMemberId(followRequestDto.getFollowedMemberId()).get();
+        Member followingMember = memberRepository.findByMemberId(followRequestDto.getFollowingMemberId()).get();
+
+        boolean isAlreadyFollow = false;
+        try {
+            for(Member following:followingMember.getFollowingMember()){
+                if(following.getId() == followedMember.getId()){
+                    isAlreadyFollow = true;
+                }
+            }
+            if (!isAlreadyFollow){
+                System.out.println("팔로우!!");
+                followedMember.getFollowedMember().add(followingMember);
+                followingMember.getFollowingMember().add(followedMember);
+            }else{
+                System.out.println("언팔로우!!");
+                followedMember.getFollowedMember().remove(followingMember);
+                followingMember.getFollowingMember().remove(followedMember);
+            }
+            memberRepository.update(followedMember);
+            memberRepository.update(followingMember);
+
+            return followingMember.getFollowingMember();
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    public void getFollow(FollowRequestDto followRequestDto) {
+        Member followedMember = memberRepository.findByMemberId(followRequestDto.getFollowedMemberId()).get();
+        Member followingMember = memberRepository.findByMemberId(followRequestDto.getFollowingMemberId()).get();
+
+        for(Member member:followedMember.getFollowedMember()){
+            System.out.println(member.getMemberId());
+        }
     }
 
     /* 모든 member 반환 */

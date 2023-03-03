@@ -25,8 +25,8 @@ public class JpaPostRepositoryTest {
     public void 글작성() {
         //given
         //로그인 - 미리 만들어둔 테스트용 멤버
-        String loginMemberId = "oooo";
-        String loginPassword = "1234";
+        String loginMemberId = "a";
+        String loginPassword = "a";
         LoginRequestDto loginRequestDto = new LoginRequestDto(loginMemberId,loginPassword);
 
         String testToken = "Bearer "+memberService.Login(loginRequestDto.getMemberId(), loginRequestDto.getPassword());
@@ -35,7 +35,7 @@ public class JpaPostRepositoryTest {
 
         String title = "테스트코드 제목";
         String mainText = "테스트코드 글 내용";
-        String memberId = "oooo";
+        String memberId = "a";
 
         post.setTitle(title);
         post.setMember(memberId);
