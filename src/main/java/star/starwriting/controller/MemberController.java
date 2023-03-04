@@ -59,11 +59,12 @@ public class MemberController {
 //    }
 
     //    회원 정보 화면
-    @GetMapping("/api/members/{id}")
-    public String getMember(@PathVariable("id") Long memberId, Model model) {
-        MemberResponseDto member = memberService.findMember(memberId).get();
+    @GetMapping(value = {"/api/members/{Id}"})
+    @ResponseBody
+    public MemberResponseDto getMember(@PathVariable("Id") Long id, Model model) {
+        MemberResponseDto member = memberService.findMember(id).get();
         model.addAttribute("member", member);
-        return "members/memberInfo";
+        return member;
     }
 
     //    회원 가입 화면
