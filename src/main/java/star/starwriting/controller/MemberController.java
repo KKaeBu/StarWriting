@@ -52,11 +52,11 @@ public class MemberController {
         return memberService.findAllMembers();
     }
 
-//    //    회원 목록 조회 화면
-//    @GetMapping("/api/members")
-//    public String getMemberList() {
-//        return "members/signUpForm";
-//    }
+    //    회원 목록 조회 화면
+    @GetMapping("/api/signUpTest")
+    public String getMemberList() {
+        return "members/signUpForm";
+    }
 
     //    회원 정보 화면
     @GetMapping(value = {"/api/members/{Id}"})

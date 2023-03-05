@@ -59,7 +59,8 @@ public class ImageStore {
             MemberProfileImageDto profileImageDto = new MemberProfileImageDto(
                     originalFilename,
                     storeFileName,
-                    fileUrl
+                    fileUrl,
+                    "C:\\Users\\82109\\Desktop\\웹\\StarWriting\\src\\main\\resources\\static\\img\\basicProfile.png"
             );
 
             MemberProfileImage profileImage = profileImageDto.toEntity();
@@ -87,7 +88,8 @@ public class ImageStore {
         MemberProfileImageDto profileImageDto = new MemberProfileImageDto(
                 originalFilename,
                 storeFileName,
-                fileUrl
+                fileUrl,
+                fullPath
         );
 
         MemberProfileImage profileImage = profileImageDto.toEntity();

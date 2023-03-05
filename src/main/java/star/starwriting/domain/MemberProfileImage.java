@@ -23,5 +23,6 @@ public class MemberProfileImage {
     private String storeFileName;
     @Column(name = "file_url")
     private String fileUrl;
-
+    @Column(name = "full_path")
+    private String fullPath;
 }
