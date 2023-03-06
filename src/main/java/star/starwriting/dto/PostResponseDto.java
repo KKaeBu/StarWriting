@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import star.starwriting.domain.Member;
+import star.starwriting.domain.MemberProfileImage;
+import star.starwriting.domain.PostImage;
 
 import java.util.Date;
 
@@ -19,4 +21,5 @@ public class PostResponseDto {
     private String title;
     private Long view;
     private Member memberId;
+    private PostImage postImage;
 }

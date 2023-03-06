@@ -3,6 +3,7 @@ package star.starwriting.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import star.starwriting.domain.Member;
 import star.starwriting.domain.Post;
 import star.starwriting.domain.PostComment;
@@ -13,6 +14,7 @@ import star.starwriting.repository.MemberRepository;
 import star.starwriting.repository.PostCommentRepository;
 import star.starwriting.repository.PostRepository;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ public class PostService {
     }
 
     /* post 작성 함수 */
-    public boolean post(PostRequestDto postRequestDto,String token){
+    public boolean post(PostRequestDto postRequestDto, String token, MultipartFile file) throws IOException {
         boolean claims = jwtProvider.parseJwtToken(token);
         System.out.println("토큰 진위여부: "+claims);
 
@@ -49,7 +51,7 @@ public class PostService {
 
             Post post = postRequestDto.toEntity(member);
             dirManager.createPostDir(member.getMemberId(), post); // 포스팅 폴더 생성
-            imageStore.storePostImage(); // 포스팅에 사용된 이미지 저장 (미완)
+            imageStore.storePostImage(member.getMemberId(), post, file); // 포스팅에 사용된 이미지 저장 (미완)
             postRepository.save(post);
 
             return true;
@@ -93,7 +95,13 @@ public class PostService {
         for (Post p : postList) {
             postResponseDtoList
                     .add(new PostResponseDto(
-                            p.getId(), p.getPostingDate(), p.getSharedNum(), p.getTitle(), p.getView(), p.getMember()
+                            p.getId(),
+                            p.getPostingDate(),
+                            p.getSharedNum(),
+                            p.getTitle(),
+                            p.getView(),
+                            p.getMember(),
+                            p.getPostImage()
                         )
                     );
         }
