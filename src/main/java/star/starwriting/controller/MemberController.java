@@ -69,9 +69,10 @@ public class MemberController {
 
     //    회원 가입 화면
     @PostMapping("/api/members")
-    public String signup(MemberRequestDto requestDto, @RequestParam MultipartFile file) throws IOException {
-        memberService.join(requestDto, file);
-        return "members/signUpForm";
+    @ResponseBody
+    public Long signup(MemberRequestDto requestDto, @RequestParam MultipartFile file) throws IOException {
+        Long result = memberService.join(requestDto, file);
+        return result;
     }
 
     @PostMapping("/api/like")
