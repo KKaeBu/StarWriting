@@ -52,17 +52,17 @@ public class MemberController {
 //        return memberService.findAllMembers();
 //    }
 
-    @GetMapping(value = { "/api/members"})
+    @GetMapping(value = { "", "/"})
     public String home(Model model) {
         model.addAttribute("members", memberService.findAllMembers());
         return "/home";
     }
 
-//    //    회원 목록 조회 화면
-//    @GetMapping("/api/members")
-//    public String getMemberList() {
-//        return "members/signUpForm";
-//    }
+    //    회원 가입 화면
+    @GetMapping("/api/members")
+    public String getMemberList() {
+        return "members/signUpForm";
+    }
 
     //    회원 정보 화면
     @GetMapping("/api/members/{id}")
@@ -72,7 +72,7 @@ public class MemberController {
         return "members/memberInfo";
     }
 
-    //    회원 가입 화면
+    //    회원 가입
     @PostMapping("/api/members")
     public String signup(MemberRequestDto requestDto, @RequestParam MultipartFile file) throws IOException {
         memberService.join(requestDto, file);

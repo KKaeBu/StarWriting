@@ -1,6 +1,5 @@
 package star.starwriting.service;
 
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +23,17 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
+    private final DirManager dirManager;
+    private final ImageStore imageStore;
     private final PostCommentRepository postCommentRepository;
     private final JwtProvider jwtProvider;
 
     @Autowired
-    public PostService(PostRepository postRepository, MemberRepository memberRepository,PostCommentRepository postCommentRepository, JwtProvider jwtProvider) {
+    public PostService(PostRepository postRepository, MemberRepository memberRepository, DirManager dirManager, ImageStore imageStore, PostCommentRepository postCommentRepository, JwtProvider jwtProvider) {
         this.postRepository = postRepository;
         this.memberRepository = memberRepository;
+        this.dirManager = dirManager;
+        this.imageStore = imageStore;
         this.jwtProvider = jwtProvider;
         this.postCommentRepository = postCommentRepository;
     }
@@ -45,6 +48,8 @@ public class PostService {
             Member member = memberRepository.findByMemberId(memberId).get();
 
             Post post = postRequestDto.toEntity(member);
+            dirManager.createPostDir(member.getMemberId(), post); // 포스팅 폴더 생성
+            imageStore.storePostImage(); // 포스팅에 사용된 이미지 저장 (미완)
             postRepository.save(post);
 
             return true;

@@ -60,8 +60,8 @@ public class MemberService {
         memberRepository.save(member);
         // 회원가입시 static/members 폴더내에 해당 맴버 폴더 생성
         // 순서가 중요 데베에 먼저 저장되야 getId()를 사용 가능 (이전에 하면 null값 반환)
-        dirManager.makeMemberDir(member.getMemberId());
-        imageStore.storeImage(file,member); // 이미지를 로컬에 저장 후 DB 에도 이미지의 정보 저장
+        dirManager.createMemberDir(member.getMemberId());
+        imageStore.storeProfileImage(file,member); // 이미지를 로컬에 저장 후 DB 에도 이미지의 정보 저장
         return member.getId();
     }
 
