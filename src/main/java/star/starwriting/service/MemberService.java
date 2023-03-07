@@ -186,8 +186,25 @@ public class MemberService {
     }
 
     /* memberId로 유저 검색 (memberId 속성은 Unique이기에, 중복 x) */
-    public Optional<MemberResponseDto> findMember(Long memberId) {
-        Member member = memberRepository.findById(memberId).get();
+    public Optional<MemberResponseDto> findMember(Long id) {
+        Member member = memberRepository.findById(id).get();
+
+        MemberResponseDto memberResponseDto = new MemberResponseDto(
+                member.getId(),
+                member.getMemberId(),
+                member.getName(),
+                member.getEmail(),
+                member.getNickname(),
+                member.getTier(),
+                member.getCreateDate(),
+                member.getProfileImage()
+        );
+
+        return Optional.ofNullable(memberResponseDto);
+    }
+
+    public Optional<MemberResponseDto> findMemberByMemberId(String memberId) {
+        Member member = memberRepository.findByMemberId(memberId).get();
 
         MemberResponseDto memberResponseDto = new MemberResponseDto(
                 member.getId(),

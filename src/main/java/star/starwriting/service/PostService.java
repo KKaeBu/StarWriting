@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import star.starwriting.domain.Member;
 import star.starwriting.domain.Post;
 import star.starwriting.domain.PostComment;
+import star.starwriting.dto.MemberResponseDto;
 import star.starwriting.dto.PostCommentRequestDto;
 import star.starwriting.dto.PostRequestDto;
 import star.starwriting.dto.PostResponseDto;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -103,6 +105,44 @@ public class PostService {
                             p.getMember(),
                             p.getPostImage()
                         )
+                    );
+        }
+        return postResponseDtoList;
+    }
+
+    // 특정 글 검색
+    public Optional<PostResponseDto> findPost(Long postId) {
+        Post post = postRepository.findById(postId).get();
+
+        PostResponseDto postResponseDto = new PostResponseDto(
+                post.getId(),
+                post.getPostingDate(),
+                post.getSharedNum(),
+                post.getTitle(),
+                post.getView(),
+                post.getMember(),
+                post.getPostImage()
+        );
+
+        return Optional.ofNullable(postResponseDto);
+    }
+
+    // 특정 회원이 작성한 모든 글
+    public List<PostResponseDto> findMemberAllPosts(String memberId) {
+        List<Post> postList = postRepository.findMemberAll(memberId);
+        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+
+        for (Post p : postList) {
+            postResponseDtoList
+                    .add(new PostResponseDto(
+                                    p.getId(),
+                                    p.getPostingDate(),
+                                    p.getSharedNum(),
+                                    p.getTitle(),
+                                    p.getView(),
+                                    p.getMember(),
+                                    p.getPostImage()
+                            )
                     );
         }
         return postResponseDtoList;
