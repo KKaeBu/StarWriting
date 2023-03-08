@@ -1,8 +1,6 @@
 package star.starwriting.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.http.HttpHeaders;
@@ -11,37 +9,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import star.starwriting.domain.Member;
-import star.starwriting.domain.MemberProfileImage;
 import star.starwriting.domain.Post;
 import star.starwriting.dto.*;
 import star.starwriting.service.ImageStore;
 import star.starwriting.service.MemberService;
+import star.starwriting.service.PostService;
 
-import javax.annotation.Resource;
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Controller
 public class MemberController {
 
     private final MemberService memberService;
+    private final PostService postService;
     private final ImageStore imageStore;
 
     @Autowired
-    public MemberController(MemberService memberService, ImageStore imageStore) {
+    public MemberController(MemberService memberService, PostService postService, ImageStore imageStore) {
         this.memberService = memberService;
+        this.postService = postService;
         this.imageStore = imageStore;
-    }
-    //    리액트 연결 테스트
-    @GetMapping("/api/react")
-    @ResponseBody
-    public String test(){
-        return "Now, Connected";
     }
 
     //    홈 화면
@@ -50,12 +38,6 @@ public class MemberController {
     public List<MemberResponseDto> home(Model model) {
         model.addAttribute("members", memberService.findAllMembers());
         return memberService.findAllMembers();
-    }
-
-    //    회원 목록 조회 화면
-    @GetMapping("/api/signUpTest")
-    public String getMemberList() {
-        return "members/signUpForm";
     }
 
     //    회원 정보 화면
@@ -67,7 +49,7 @@ public class MemberController {
         return member;
     }
 
-    //    회원 가입 화면
+    //    회원 가입
     @PostMapping("/api/members")
     @ResponseBody
     public Long signup(MemberRequestDto requestDto, @RequestParam MultipartFile file) throws IOException {
@@ -90,17 +72,42 @@ public class MemberController {
     }
 
     // 로그인
+//    @PostMapping("/api/login")
+//    public ResponseEntity<HttpHeaders> Login(@RequestBody LoginRequestDto loginRequestDto) {
+//        String token = memberService.Login(loginRequestDto.getMemberId(), loginRequestDto.getPassword());
+//
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//
+//        if (token != null) {
+//            httpHeaders.add("Authorization", "Bearer " + token);
+//            return new ResponseEntity<>(httpHeaders, HttpStatus.OK); /* http state code `200` 반환 */
+//        } else {
+//            return new ResponseEntity<>(httpHeaders, HttpStatus.BAD_REQUEST); /* http state code 400 반환 */
+//        }
+//    }
+
+    // 로그인 화면
+    @GetMapping("/api/login")
+    public String Login() {
+        return "members/signInForm";
+    }
+
+    // 로그인 (폼 이용 버전)
     @PostMapping("/api/login")
-    public ResponseEntity<HttpHeaders> Login(@RequestBody LoginRequestDto loginRequestDto) {
+    public String Login(LoginRequestDto loginRequestDto, Model model) {
         String token = memberService.Login(loginRequestDto.getMemberId(), loginRequestDto.getPassword());
+        String memberId = loginRequestDto.getMemberId();
 
         HttpHeaders httpHeaders = new HttpHeaders();
 
         if (token != null) {
             httpHeaders.add("Authorization", "Bearer " + token);
-            return new ResponseEntity<>(httpHeaders, HttpStatus.OK); /* http state code `200` 반환 */
+            model.addAttribute("token", token);
+            model.addAttribute("posts", postService.findMemberAllPosts(memberId));
+            model.addAttribute("member", memberService.findMemberByMemberId(memberId).get());
+            return "members/memberHome"; /* http state code `200` 반환 */
         } else {
-            return new ResponseEntity<>(httpHeaders, HttpStatus.BAD_REQUEST); /* http state code 400 반환 */
+            return "members/signInForm"; /* http state code 400 반환 */
         }
     }
 

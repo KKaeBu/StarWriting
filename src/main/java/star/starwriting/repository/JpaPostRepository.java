@@ -39,4 +39,11 @@ public class JpaPostRepository implements PostRepository {
                 .getResultList();
         return result;
     }
+
+    @Override
+    public List<Post> findMemberAll(String memberId) {
+        List<Post> result = em.createQuery("select p from Post p where p.member = :memberId",Post.class)
+                .getResultList();
+        return result;
+    }
 }

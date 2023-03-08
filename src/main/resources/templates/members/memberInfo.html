@@ -26,7 +26,13 @@
       <div th:text="'가입일 : ' + ${member.createDate}"></div>
       <br/>
       <p>프로필 이미지</p>
-      <img th:src="@{/img/} +${member.getMemberId}+@{/}+ ${member.profileImage.storeFileName}" width="100px" height="100px" style="border-color: black; border-style: solid; border-width: thin;"/>
+      <th:block th:if="${member.profileImage.storeFileName == 'basicProfile.png'}">
+        <img th:src="@{/img/profileImg/} + ${member.profileImage.storeFileName}" width="100px" height="100px" style="border-color: black; border-style: solid; border-width: thin;"/>
+      </th:block>
+      <th:block th:if="${member.profileImage.storeFileName != 'basicProfile.png'}">
+        <img th:src="@{/members/} + ${member.memberId} + @{/profileImg/} + ${member.profileImage.storeFileName}" width="100px" height="100px" style="border-color: black; border-style: solid; border-width: thin;"/>
+      </th:block>
+
       <br/>
     </div>
   </div>

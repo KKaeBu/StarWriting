@@ -48,5 +48,9 @@ public class Post {
 //    private boolean approved; // 글 게시 승인 여부 근데 이런거 없애도 될듯..?? 프로젝트 규모 줄이기 일환으로
 //    @Column(nullable = false, length = 20)
 //    private String type; // 글 종류 (어떤 글 인지)
+
 //    이미지 파일 추가해야됨
+    @OneToOne
+    @JoinColumn(name = "post_image")
+    private PostImage postImage;
 }

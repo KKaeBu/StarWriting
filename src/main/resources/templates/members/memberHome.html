@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/style.css">
+    <title>회원 글 목록</title>
+    <nav>회원 글 목록 화면</nav>
+</head>
+<body>
+<div>
+    <br/>
+    <div align="right" style="margin-right: 100px">
+        <button onclick="location.href='./api/members'">
+            로그아웃
+        </button>
+    </div>
+</div>
+<br/>
+<div>
+    <table border="1" width="1100" align="center">
+        <thead>
+        <tr>
+            <th width="50">#(pk)</th>
+            <th width="300">썸네일</th>
+            <th width="200">타이틀</th>
+            <th width="200">포스팅 날짜</th>
+            <th width="200">작성자</th>
+            <th width="200">조회수</th>
+            <th width="200">상세 보기</th>
+        </tr>
+        </thead>
+        <tbody align="center">
+        <tr th:each="post: ${posts}">
+            <td th:text="${post.id}"></td>
+            <td th:text="${post.postImage}"></td>
+            <td th:text="${post.title}"></td>
+            <td th:text="${post.posting_date}"></td>
+            <td th:text="${post.memberId}"></td>
+            <td th:text="${post.view}"></td>
+            <td> <button th:onclick="|location.href='@{/api/members/}'+ ${member.id} + '@{/posts}'|" style="height:40px;">보기</button> </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<script>
+    
+</script>
+</html>
