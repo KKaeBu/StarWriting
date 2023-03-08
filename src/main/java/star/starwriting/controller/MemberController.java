@@ -31,39 +31,20 @@ public class MemberController {
         this.postService = postService;
         this.imageStore = imageStore;
     }
-    //    리액트 연결 테스트
-//    @GetMapping("/api/react")
-//    @ResponseBody
-//    public String test(){
-//        return "Now, Connected";
-//    }
-
     //    홈 화면
-//    @GetMapping(value = { "/api/members"})
-//    @ResponseBody
-//    public List<MemberResponseDto> home(Model model) {
-//        model.addAttribute("members", memberService.findAllMembers());
-//        return memberService.findAllMembers();
-//    }
-
-    @GetMapping(value = { "", "/"})
-    public String home(Model model) {
+    @GetMapping(value = {"", "/api", "/", "/api/members"})
+    @ResponseBody
+    public List<MemberResponseDto> home(Model model) {
         model.addAttribute("members", memberService.findAllMembers());
-        return "/home";
-    }
-
-    //    회원 가입 화면
-    @GetMapping("/api/members")
-    public String getMemberList() {
-        return "members/signUpForm";
+        return memberService.findAllMembers();
     }
 
     //    회원 정보 화면
     @GetMapping("/api/members/{id}")
-    public String getMember(@PathVariable("id") Long id, Model model) {
+    @ResponseBody
+    public MemberResponseDto getMember(@PathVariable("id") Long id) {
         MemberResponseDto member = memberService.findMember(id).get();
-        model.addAttribute("member", member);
-        return "members/memberInfo";
+        return member;
     }
 
     //    회원 가입
