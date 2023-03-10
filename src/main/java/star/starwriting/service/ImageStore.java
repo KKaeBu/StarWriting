@@ -114,6 +114,8 @@ public class ImageStore {
             String storeFileName = originalFileName;
             String fileUrl = basicPostImgPath + pathSeperator(storeFileName);
 
+            System.out.println(storeFileName);
+
             PostImageDto postImageDto = new PostImageDto(
                     originalFileName,
                     storeFileName,
