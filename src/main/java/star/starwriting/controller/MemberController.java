@@ -43,9 +43,8 @@ public class MemberController {
     //    회원 정보 화면
     @GetMapping(value = {"/api/members/{Id}"})
     @ResponseBody
-    public MemberResponseDto getMember(@PathVariable("Id") Long id, Model model) {
+    public MemberResponseDto getMember(@PathVariable("Id") Long id) {
         MemberResponseDto member = memberService.findMember(id).get();
-        model.addAttribute("member", member);
         return member;
     }
 

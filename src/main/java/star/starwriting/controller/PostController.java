@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import star.starwriting.dto.PostCommentRequestDto;
 import star.starwriting.dto.PostRequestDto;
+import star.starwriting.dto.PostResponseDto;
 import star.starwriting.service.PostService;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class PostController {
@@ -41,6 +43,18 @@ public class PostController {
         }else{
             return new ResponseEntity<>("토큰이 유효하지 않습니다", HttpStatus.BAD_REQUEST); /* http state code 400 반환 */
         }
+    }
+    @GetMapping(value = {"/api/posts"})
+    @ResponseBody
+    public List<PostResponseDto> getAllPosts(){
+        return postService.findAllPosts();
+    }
+
+    @GetMapping(value = {"/api/posts/{Id}"})
+    @ResponseBody
+    public PostResponseDto getPost(@PathVariable("Id")Long id){
+        PostResponseDto post = postService.findPost(id).get();
+        return post;
     }
 
     // 댓글 작성
