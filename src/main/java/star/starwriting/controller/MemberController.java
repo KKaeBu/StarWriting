@@ -1,6 +1,11 @@
 package star.starwriting.controller;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +20,10 @@ import star.starwriting.service.ImageStore;
 import star.starwriting.service.MemberService;
 import star.starwriting.service.PostService;
 
+import javax.print.attribute.standard.Media;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Controller
@@ -24,12 +32,15 @@ public class MemberController {
     private final MemberService memberService;
     private final PostService postService;
     private final ImageStore imageStore;
+    private final ResourceLoader resourceLoader;
+
 
     @Autowired
-    public MemberController(MemberService memberService, PostService postService, ImageStore imageStore) {
+    public MemberController(MemberService memberService, PostService postService, ImageStore imageStore, ResourceLoader resourceLoader) {
         this.memberService = memberService;
         this.postService = postService;
         this.imageStore = imageStore;
+        this.resourceLoader = resourceLoader;
     }
     //    홈 화면
     @GetMapping(value = {"", "/api", "/", "/api/members"})
@@ -124,5 +135,16 @@ public class MemberController {
     public String GetFollow(@RequestBody FollowRequestDto followRequestDto) {
         memberService.getFollow(followRequestDto);
         return "성공";
+    }
+
+    @GetMapping(value = "/api/members/{id}/profile",produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] GetProfileImage(@PathVariable Long id) throws IOException {
+        MemberResponseDto member = memberService.findMember(id).get();
+        String filePath = "/static/img/profileImg/" + member.getProfileImage().getStoreFileName();
+
+        // getResourceAsStream의 기본 path가 resources부터 시작임
+        InputStream in = getClass().getResourceAsStream(filePath);
+        System.out.println(in);
+        return IOUtils.toByteArray(in);
     }
 }
