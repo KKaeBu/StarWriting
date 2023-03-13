@@ -59,9 +59,9 @@ public class PostController {
 
     // 댓글 작성
     @PostMapping("/api/comments")
-    public ResponseEntity<String> saveComment(@RequestHeader(value = "Authorization")String token, @RequestBody PostCommentRequestDto postCommentRequestDto){
-        boolean httpState = postService.comment(postCommentRequestDto,token);
-        if (httpState) {
+    public ResponseEntity<String> saveComment(PostCommentRequestDto postCommentRequestDto){
+        boolean isPost = postService.comment(postCommentRequestDto);
+        if (isPost) {
             return new ResponseEntity<>("댓글이 성공적으로 작성되었습니다.", HttpStatus.CREATED); /* http state code 201 반환 */
         }else{
             return new ResponseEntity<>("댓글 작성에 실패했습니다.", HttpStatus.BAD_REQUEST); /* http state code 400 반환 */

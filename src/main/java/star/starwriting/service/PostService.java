@@ -54,11 +54,7 @@ public class PostService {
             return true;
     }
 
-    public boolean comment(PostCommentRequestDto postCommentRequestDto, String token){
-        boolean claims = jwtProvider.parseJwtToken(token);
-        System.out.println("토큰 진위여부: "+claims);
-
-        if(claims){
+    public boolean comment(PostCommentRequestDto postCommentRequestDto){
             String memberId = postCommentRequestDto.getMember();
             Member member = memberRepository.findByMemberId(memberId).get();
             Long postId = postCommentRequestDto.getPost();
@@ -76,9 +72,6 @@ public class PostService {
             postCommentRepository.save(postComment);
 
             return true;
-        }else{
-            return false;
-        }
     }
 
     public boolean isValidToken(String token){
