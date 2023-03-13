@@ -156,7 +156,7 @@ public class ImageStore {
         return originalFilename.substring(pos + 1);
     }
 
-    private String pathSeperator(String path) {
+    public String pathSeperator(String path) {
         String[] split = path.split("/");
         String joinPath = File.separator + String.join(File.separator, split) + File.separator;
 

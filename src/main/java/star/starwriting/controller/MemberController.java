@@ -24,6 +24,8 @@ import javax.print.attribute.standard.Media;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.List;
 
 @Controller
@@ -137,13 +139,30 @@ public class MemberController {
         return "성공";
     }
 
+    // 이미지 파일 전달
     @GetMapping(value = "/api/members/{id}/profile",produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] GetProfileImage(@PathVariable Long id) throws IOException {
-        MemberResponseDto member = memberService.findMember(id).get();
-        String filePath = "/static/img/profileImg/" + member.getProfileImage().getStoreFileName();
+//        MemberResponseDto member = memberService.findMember(id).get();
+//        String filePath = "/static/img/profileImg/" + member.getProfileImage().getStoreFileName();
+//
+//        // getResourceAsStream의 기본 path가 resources부터 시작임
+//        InputStream in = getClass().getResourceAsStream(filePath);
+//        System.out.println("filePath: " + filePath);
+//        System.out.println(in);
+//        return IOUtils.toByteArray(in);
 
-        // getResourceAsStream의 기본 path가 resources부터 시작임
-        InputStream in = getClass().getResourceAsStream(filePath);
+        MemberResponseDto member = memberService.findMember(id).get();
+        String fileName = member.getProfileImage().getStoreFileName();
+        String imgRootPath = "static/img/profileImg";
+
+        if(!fileName.equals("basicProfile.png"))
+            imgRootPath = "static/members/" + member.getMemberId() + "/profileImg";
+
+        String filePath = imageStore.pathSeperator(imgRootPath) + fileName;
+        System.out.println("filePath: " + filePath);
+
+        // getResourceAsStream()의 기본 path가 resources부터 시작임
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream(filePath);
         System.out.println(in);
         return IOUtils.toByteArray(in);
     }
