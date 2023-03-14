@@ -129,8 +129,8 @@ public class ImageStore {
         String originalFileName = file.getOriginalFilename();
         String storeFileName = nowTimeStamp() + "-" + UUID.randomUUID() + "." + extractExt(originalFileName);
 
-        String fileUrl = membersPath + pathSeperator(memberId + "/posts/" + post.getTitle()) + storeFileName;
-        String fullPath = membersDir + pathSeperator(memberId + "/posts/" + post.getTitle()) + storeFileName;
+        String fileUrl = membersPath + pathSeperator(memberId + "/posts/" + post.getTitle()) + "/img/" + storeFileName;
+        String fullPath = membersDir + pathSeperator(memberId + "/posts/" + post.getTitle()) + "/img/" + storeFileName;
 
 
 
@@ -202,6 +202,24 @@ public class ImageStore {
         }
 
         return fileName;
+    }
+
+    public boolean checkBgImg(String bgName) {
+        boolean result = false;
+        File postImgDir = new File(basicPostImgPath);
+        try {
+            File[] files = postImgDir.listFiles();
+            for(int i = 0; i < files.length; i++){
+                if(files[i].getName().equals(bgName)){
+                    result = true;
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return result;
     }
 
 }

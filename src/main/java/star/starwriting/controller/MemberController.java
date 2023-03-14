@@ -142,15 +142,6 @@ public class MemberController {
     // 이미지 파일 전달
     @GetMapping(value = "/api/members/{id}/profile",produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] GetProfileImage(@PathVariable Long id) throws IOException {
-//        MemberResponseDto member = memberService.findMember(id).get();
-//        String filePath = "/static/img/profileImg/" + member.getProfileImage().getStoreFileName();
-//
-//        // getResourceAsStream의 기본 path가 resources부터 시작임
-//        InputStream in = getClass().getResourceAsStream(filePath);
-//        System.out.println("filePath: " + filePath);
-//        System.out.println(in);
-//        return IOUtils.toByteArray(in);
-
         MemberResponseDto member = memberService.findMember(id).get();
         String fileName = member.getProfileImage().getStoreFileName();
         String imgRootPath = "static/img/profileImg";

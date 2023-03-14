@@ -1,21 +1,27 @@
 package star.starwriting.controller;
 
-import io.jsonwebtoken.Claims;
+import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import star.starwriting.dto.PostCommentRequestDto;
 import star.starwriting.dto.PostRequestDto;
+import star.starwriting.dto.PostResponseDto;
+import star.starwriting.service.ImageStore;
 import star.starwriting.service.PostService;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 @RestController
 public class PostController {
     private final PostService postService;
-    public PostController(PostService postService) {
+    private final ImageStore imageStore;
+    public PostController(PostService postService, ImageStore imageStore) {
         this.postService = postService;
+        this.imageStore = imageStore;
     }
 
     // 글 작성
@@ -38,5 +44,24 @@ public class PostController {
         }else{
             return new ResponseEntity<>("댓글 작성에 실패했습니다.", HttpStatus.BAD_REQUEST); /* http state code 400 반환 */
         }
+    }
+
+    // 이미지 파일 전달
+    @GetMapping(value = "/api/posts/{id}",produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] GetProfileImage(@PathVariable Long id) throws IOException {
+        PostResponseDto post = postService.findPost(id).get();
+        String fileName = post.getPostImage().getStoreFileName();
+        String imgRootPath = "static/img/postImg";
+
+        if(!imageStore.checkBgImg(fileName))
+            imgRootPath = "static/members/" + post.getMemberId() + "/posts/" + post.getTitle() + "/img";
+
+        String filePath = imageStore.pathSeperator(imgRootPath) + fileName;
+        System.out.println("filePath: " + filePath);
+
+        // getResourceAsStream()의 기본 path가 resources부터 시작임
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream(filePath);
+        System.out.println(in);
+        return IOUtils.toByteArray(in);
     }
 }
