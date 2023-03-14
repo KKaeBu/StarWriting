@@ -44,6 +44,7 @@ public class MemberController {
         this.imageStore = imageStore;
         this.resourceLoader = resourceLoader;
     }
+
     //    홈 화면
     @GetMapping(value = {"", "/api", "/", "/api/members"})
     @ResponseBody
@@ -62,9 +63,10 @@ public class MemberController {
 
     //    회원 가입
     @PostMapping("/api/members")
-    public String signup(MemberRequestDto requestDto, @RequestParam MultipartFile file) throws IOException {
-        memberService.join(requestDto, file);
-        return "members/signUpForm";
+    @ResponseBody
+    public Long signup(MemberRequestDto requestDto, @RequestParam MultipartFile file) throws IOException {
+        Long result = memberService.join(requestDto, file);
+        return result;
     }
 
     @PostMapping("/api/like")
@@ -82,42 +84,17 @@ public class MemberController {
     }
 
     // 로그인
-//    @PostMapping("/api/login")
-//    public ResponseEntity<HttpHeaders> Login(@RequestBody LoginRequestDto loginRequestDto) {
-//        String token = memberService.Login(loginRequestDto.getMemberId(), loginRequestDto.getPassword());
-//
-//        HttpHeaders httpHeaders = new HttpHeaders();
-//
-//        if (token != null) {
-//            httpHeaders.add("Authorization", "Bearer " + token);
-//            return new ResponseEntity<>(httpHeaders, HttpStatus.OK); /* http state code `200` 반환 */
-//        } else {
-//            return new ResponseEntity<>(httpHeaders, HttpStatus.BAD_REQUEST); /* http state code 400 반환 */
-//        }
-//    }
-
-    // 로그인 화면
-    @GetMapping("/api/login")
-    public String Login() {
-        return "members/signInForm";
-    }
-
-    // 로그인 (폼 이용 버전)
     @PostMapping("/api/login")
-    public String Login(LoginRequestDto loginRequestDto, Model model) {
+    public ResponseEntity<HttpHeaders> Login(@RequestBody LoginRequestDto loginRequestDto) {
         String token = memberService.Login(loginRequestDto.getMemberId(), loginRequestDto.getPassword());
-        String memberId = loginRequestDto.getMemberId();
 
         HttpHeaders httpHeaders = new HttpHeaders();
 
         if (token != null) {
             httpHeaders.add("Authorization", "Bearer " + token);
-            model.addAttribute("token", token);
-            model.addAttribute("posts", postService.findMemberAllPosts(memberId));
-            model.addAttribute("member", memberService.findMemberByMemberId(memberId).get());
-            return "members/memberHome"; /* http state code `200` 반환 */
+            return new ResponseEntity<>(httpHeaders, HttpStatus.OK); /* http state code `200` 반환 */
         } else {
-            return "members/signInForm"; /* http state code 400 반환 */
+            return new ResponseEntity<>(httpHeaders, HttpStatus.BAD_REQUEST); /* http state code 400 반환 */
         }
     }
 

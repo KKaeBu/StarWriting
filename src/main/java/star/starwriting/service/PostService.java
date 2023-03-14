@@ -43,11 +43,7 @@ public class PostService {
     }
 
     /* post 작성 함수 */
-    public boolean post(PostRequestDto postRequestDto, String token, MultipartFile file) throws IOException {
-        boolean claims = jwtProvider.parseJwtToken(token);
-        System.out.println("토큰 진위여부: "+claims);
-
-        if(claims){
+    public boolean post(PostRequestDto postRequestDto, MultipartFile file) throws IOException {
             String memberId = postRequestDto.getMember();
             Member member = memberRepository.findByMemberId(memberId).get();
 
@@ -55,18 +51,10 @@ public class PostService {
             dirManager.createPostDir(member.getMemberId(), post); // 포스팅 폴더 생성
             imageStore.storePostImage(member.getMemberId(), post, file); // 포스팅에 사용된 이미지 저장 (미완)
             postRepository.save(post);
-
             return true;
-        }else{
-            return false;
-        }
     }
 
-    public boolean comment(PostCommentRequestDto postCommentRequestDto, String token){
-        boolean claims = jwtProvider.parseJwtToken(token);
-        System.out.println("토큰 진위여부: "+claims);
-
-        if(claims){
+    public boolean comment(PostCommentRequestDto postCommentRequestDto){
             String memberId = postCommentRequestDto.getMember();
             Member member = memberRepository.findByMemberId(memberId).get();
             Long postId = postCommentRequestDto.getPost();
@@ -84,9 +72,10 @@ public class PostService {
             postCommentRepository.save(postComment);
 
             return true;
-        }else{
-            return false;
-        }
+    }
+
+    public boolean isValidToken(String token){
+        return jwtProvider.parseJwtToken(token);
     }
 
     /* 모든 post 조회 */

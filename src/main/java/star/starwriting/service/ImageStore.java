@@ -55,7 +55,8 @@ public class ImageStore {
             MemberProfileImageDto profileImageDto = new MemberProfileImageDto(
                     originalFilename,
                     storeFileName,
-                    fileUrl
+                    fileUrl,
+                    "C:\\Users\\82109\\Desktop\\웹\\StarWriting\\src\\main\\resources\\static\\img\\basicProfile.png"
             );
 
             MemberProfileImage profileImage = profileImageDto.toEntity();
@@ -86,7 +87,8 @@ public class ImageStore {
         MemberProfileImageDto profileImageDto = new MemberProfileImageDto(
                 originalFilename,
                 storeFileName,
-                fileUrl
+                fileUrl,
+                fullPath
         );
 
         MemberProfileImage profileImage = profileImageDto.toEntity();
@@ -111,6 +113,8 @@ public class ImageStore {
             String originalFileName = chooseBgImg(postImgDir, bgImgNum);
             String storeFileName = originalFileName;
             String fileUrl = basicPostImgPath + pathSeperator(storeFileName);
+
+            System.out.println(storeFileName);
 
             PostImageDto postImageDto = new PostImageDto(
                     originalFileName,
