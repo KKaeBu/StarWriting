@@ -57,9 +57,9 @@ public class PostController {
         return postService.findAllPosts();
     }
 
-    @GetMapping(value = {"/api/posts/{Id}"})
+    @GetMapping(value = {"/api/posts/{id}"})
     @ResponseBody
-    public PostResponseDto getPost(@PathVariable("Id")Long id){
+    public PostResponseDto getPost(@PathVariable("id")Long id){
         PostResponseDto post = postService.findPost(id).get();
         return post;
     }
@@ -76,20 +76,23 @@ public class PostController {
     }
 
     // 이미지 파일 전달
-    @GetMapping(value = "/api/posts/{id}",produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/api/posts/{id}/image",produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] GetProfileImage(@PathVariable Long id) throws IOException {
         PostResponseDto post = postService.findPost(id).get();
         String fileName = post.getPostImage().getStoreFileName();
         String imgRootPath = "static/img/postImg";
 
+        System.out.println("memberId: " + post.getMember().getMemberId());
         if(!imageStore.checkBgImg(fileName))
-            imgRootPath = "static/members/" + post.getMemberId() + "/posts/" + post.getTitle() + "/img";
+            imgRootPath = "static/members/" + post.getMember().getMemberId() + "/posts/" + post.getTitle() + "/img";
 
         String filePath = imageStore.pathSeperator(imgRootPath) + fileName;
         System.out.println("filePath: " + filePath);
 
         // getResourceAsStream()의 기본 path가 resources부터 시작임
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream(filePath);
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        InputStream in = loader.getResourceAsStream(filePath);
+//        InputStream in = this.getClass().getClassLoader().getResourceAsStream(filePath);
         System.out.println(in);
         return IOUtils.toByteArray(in);
     }

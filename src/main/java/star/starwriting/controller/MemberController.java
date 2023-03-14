@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -117,7 +119,7 @@ public class MemberController {
     }
 
     // 이미지 파일 전달
-    @GetMapping(value = "/api/members/{id}/profile",produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/api/members/{id}/image",produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] GetProfileImage(@PathVariable Long id) throws IOException {
         MemberResponseDto member = memberService.findMember(id).get();
         String fileName = member.getProfileImage().getStoreFileName();
@@ -130,7 +132,9 @@ public class MemberController {
         System.out.println("filePath: " + filePath);
 
         // getResourceAsStream()의 기본 path가 resources부터 시작임
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream(filePath);
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        InputStream in = loader.getResourceAsStream(filePath);
+//        InputStream in = this.getClass().getClassLoader().getResourceAsStream(filePath);
         System.out.println(in);
         return IOUtils.toByteArray(in);
     }

@@ -20,6 +20,6 @@ public class PostResponseDto {
     private Long shared_num;
     private String title;
     private Long view;
-    private Member memberId;
+    private Member member;
     private PostImage postImage;
 }
