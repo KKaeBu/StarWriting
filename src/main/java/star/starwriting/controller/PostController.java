@@ -44,9 +44,9 @@ public class PostController {
     @ResponseBody
     public ResponseEntity<String> Auth(@RequestHeader(value = "Authorization", required=false) String token){
         System.out.println(token);
-        boolean isValid = postService.isValidToken(token);
-        if(isValid){
-            return new ResponseEntity<>("토큰이 유효합니다", HttpStatus.OK); /* http state code 200 반환 */
+        String memberId = postService.isValidToken(token);
+        if(memberId != null){
+            return new ResponseEntity<>(memberId, HttpStatus.OK); /* http state code 200 반환 */
         }else{
             return new ResponseEntity<>("토큰이 유효하지 않습니다", HttpStatus.BAD_REQUEST); /* http state code 400 반환 */
         }

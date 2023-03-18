@@ -83,7 +83,7 @@ public class MemberService {
         // 비밀번호가 맞다면
         if (bCryptPasswordEncoder.matches(inputPassword,hashedPassword)){
             String token = jwtProvider.createToken(member.getMemberId());
-            boolean claims = jwtProvider.parseJwtToken("Bearer "+ token); // 토큰 검증
+            String claims = jwtProvider.parseJwtToken("Bearer "+ token); // 토큰 검증
             return token;
         }else {
             System.out.println("잘못된 비밀번호 입력됨.");

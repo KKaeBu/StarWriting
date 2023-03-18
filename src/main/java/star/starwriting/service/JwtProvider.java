@@ -29,21 +29,20 @@ public class JwtProvider {
     }
 
     /*Jwt 토큰의 유효성 체크 메소드*/
-    public boolean parseJwtToken(String token) {
+    public String parseJwtToken(String token) {
         token = BearerRemove(token); // Bearer 제거
         try {
-            Jwts.parser()
-                .setSigningKey(Base64.getEncoder().encodeToString(secretKey.getBytes()))
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-            return true;
+            return Jwts.parser()
+                    .setSigningKey(Base64.getEncoder().encodeToString(secretKey.getBytes()))
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
         } catch (ExpiredJwtException e) {
             System.out.println("토큰 만료");
-            return false;
+            return null;
         } catch (JwtException e) {
             System.out.println("토큰 에러");
-            return false;
+            return null;
         }
     }
 

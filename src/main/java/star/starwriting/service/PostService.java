@@ -74,7 +74,7 @@ public class PostService {
             return true;
     }
 
-    public boolean isValidToken(String token){
+    public String isValidToken(String token){
         return jwtProvider.parseJwtToken(token);
     }
 
