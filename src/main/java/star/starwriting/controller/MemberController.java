@@ -63,6 +63,13 @@ public class MemberController {
         return member;
     }
 
+    @GetMapping("/api/memberIds/{memberId}")
+    @ResponseBody
+    public MemberResponseDto getMemberByMemberId(@PathVariable("memberId") String memberId){
+        MemberResponseDto member = memberService.findMemberByMemberId(memberId).get();
+        return member;
+    }
+
     //    회원 가입
     @PostMapping("/api/members")
     @ResponseBody

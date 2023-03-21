@@ -127,6 +127,10 @@ public class MemberService {
         Member followedMember = memberRepository.findByMemberId(followRequestDto.getFollowedMemberId()).get();
         Member followingMember = memberRepository.findByMemberId(followRequestDto.getFollowingMemberId()).get();
 
+        if(followedMember == followingMember){
+            return null;
+        }
+
         boolean isAlreadyFollow = false;
         try {
             for(Member following:followingMember.getFollowingMember()){
