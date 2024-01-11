@@ -14,17 +14,18 @@ import javax.persistence.Column;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberProfileImageDto {
-    private String originalFileName;
-    private String storeFileName;
-    private String fileUrl;
-    private String fullPath;
 
-    public MemberProfileImage toEntity() {
-        return MemberProfileImage.builder()
-                .originalFileName(this.originalFileName)
-                .storeFileName(this.storeFileName)
-                .fileUrl(this.fileUrl)
-                .fullPath(this.fullPath)
-                .build();
-    }
+  private String originalFileName;
+  private String storeFileName;
+  private String fileUrl;
+  private String fullPath;
+
+  public MemberProfileImage toEntity() {
+    return MemberProfileImage.builder()
+        .originalFileName(this.originalFileName)
+        .storeFileName(this.storeFileName)
+        .fileUrl(this.fileUrl)
+        .fullPath(this.fullPath)
+        .build();
+  }
 }

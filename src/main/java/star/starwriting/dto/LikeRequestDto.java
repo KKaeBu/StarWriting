@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LikeRequestDto {
-    private String memberId;
-    private Long postId;
+
+  private String memberId;
+  private Long postId;
 }

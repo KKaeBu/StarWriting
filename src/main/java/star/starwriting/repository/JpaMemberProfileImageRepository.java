@@ -9,21 +9,22 @@ import java.util.Optional;
 
 @Repository
 public class JpaMemberProfileImageRepository implements MemberProfileImageRepository {
-    private final EntityManager em;
 
-    public JpaMemberProfileImageRepository(EntityManager em) {
-        this.em = em;
-    }
+  private final EntityManager em;
 
-    @Override
-    public MemberProfileImage save(MemberProfileImage memberProfileImage) {
-        em.persist(memberProfileImage);
-        return memberProfileImage;
-    }
+  public JpaMemberProfileImageRepository(EntityManager em) {
+    this.em = em;
+  }
 
-    @Override
-    public Optional<MemberProfileImage> findById(Long id) {
-        MemberProfileImage memberProfileImage = em.find(MemberProfileImage.class, id);
-        return Optional.ofNullable(memberProfileImage);
-    }
+  @Override
+  public MemberProfileImage save(MemberProfileImage memberProfileImage) {
+    em.persist(memberProfileImage);
+    return memberProfileImage;
+  }
+
+  @Override
+  public Optional<MemberProfileImage> findById(Long id) {
+    MemberProfileImage memberProfileImage = em.find(MemberProfileImage.class, id);
+    return Optional.ofNullable(memberProfileImage);
+  }
 }

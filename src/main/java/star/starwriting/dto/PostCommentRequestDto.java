@@ -16,18 +16,19 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostCommentRequestDto {
-    private String mainText;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private String commentDate;
-    private String member;
-    private Long post;
 
-    public PostComment toEntity(Member member, Post post) {
-        return PostComment.builder()
-                .mainText(this.mainText)
-                .member(member)
-                .post(post)
-                .commentDate(this.commentDate)
-                .build();
-    }
+  private String mainText;
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private String commentDate;
+  private String member;
+  private Long post;
+
+  public PostComment toEntity(Member member, Post post) {
+    return PostComment.builder()
+        .mainText(this.mainText)
+        .member(member)
+        .post(post)
+        .commentDate(this.commentDate)
+        .build();
+  }
 }

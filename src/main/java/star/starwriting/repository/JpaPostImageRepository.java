@@ -9,21 +9,22 @@ import java.util.Optional;
 
 @Repository
 public class JpaPostImageRepository implements PostImageRepository {
-    private final EntityManager em;
 
-    public JpaPostImageRepository(EntityManager em) {
-        this.em = em;
-    }
+  private final EntityManager em;
 
-    @Override
-    public PostImage save(PostImage postImage) {
-        em.persist(postImage);
-        return postImage;
-    }
+  public JpaPostImageRepository(EntityManager em) {
+    this.em = em;
+  }
 
-    @Override
-    public Optional<PostImage> findById(Long id) {
-        PostImage postImage = em.find(PostImage.class, id);
-        return Optional.ofNullable(postImage);
-    }
+  @Override
+  public PostImage save(PostImage postImage) {
+    em.persist(postImage);
+    return postImage;
+  }
+
+  @Override
+  public Optional<PostImage> findById(Long id) {
+    PostImage postImage = em.find(PostImage.class, id);
+    return Optional.ofNullable(postImage);
+  }
 }

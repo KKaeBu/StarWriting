@@ -12,15 +12,16 @@ import star.starwriting.domain.PostImage;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostImageDto {
-    private String originalFileName;
-    private String storeFileName;
-    private String fileUrl;
 
-    public PostImage toEntity() {
-        return PostImage.builder()
-                .originalFileName(this.originalFileName)
-                .storeFileName(this.storeFileName)
-                .fileUrl(this.fileUrl)
-                .build();
-    }
+  private String originalFileName;
+  private String storeFileName;
+  private String fileUrl;
+
+  public PostImage toEntity() {
+    return PostImage.builder()
+        .originalFileName(this.originalFileName)
+        .storeFileName(this.storeFileName)
+        .fileUrl(this.fileUrl)
+        .build();
+  }
 }

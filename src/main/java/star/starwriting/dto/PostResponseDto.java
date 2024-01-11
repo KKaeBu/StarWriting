@@ -15,11 +15,12 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostResponseDto {
-    private Long id;
-    private Date posting_date;
-    private Long shared_num;
-    private String title;
-    private Long view;
-    private Member member;
-    private PostImage postImage;
+
+  private Long id;
+  private Date posting_date;
+  private Long shared_num;
+  private String title;
+  private Long view;
+  private Member member;
+  private PostImage postImage;
 }

@@ -8,23 +8,24 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Repository
-public class JpaPostCommentRepository implements PostCommentRepository{
-    EntityManager em;
+public class JpaPostCommentRepository implements PostCommentRepository {
 
-    public JpaPostCommentRepository(EntityManager em) {
-        this.em = em;
-    }
+  EntityManager em;
 
-    @Override
-    public PostComment save(PostComment postComment){
-        em.persist(postComment);
-        return postComment;
-    }
+  public JpaPostCommentRepository(EntityManager em) {
+    this.em = em;
+  }
 
-    @Override
-    public List<PostComment> findAll(){
-        List<PostComment> result = em.createQuery("select p from PostComment p",PostComment.class)
-                .getResultList();
-        return result;
-    }
+  @Override
+  public PostComment save(PostComment postComment) {
+    em.persist(postComment);
+    return postComment;
+  }
+
+  @Override
+  public List<PostComment> findAll() {
+    List<PostComment> result = em.createQuery("select p from PostComment p", PostComment.class)
+        .getResultList();
+    return result;
+  }
 }

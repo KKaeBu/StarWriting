@@ -16,23 +16,24 @@ import java.util.List;
 @Table(name = "post_comment_tb")
 @Entity
 public class PostComment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @Column(name = "main_text", length = 100, nullable = false)
-    private String mainText;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(name = "comment_date")
-    private String commentDate;
+  @Column(name = "main_text", length = 100, nullable = false)
+  private String mainText;
 
-    // following member
-    @OneToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
+  @Column(name = "comment_date")
+  private String commentDate;
 
-    // following member
-    @OneToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+  // following member
+  @OneToOne
+  @JoinColumn(name = "post_id")
+  private Post post;
+
+  // following member
+  @OneToOne
+  @JoinColumn(name = "member_id")
+  private Member member;
 }

@@ -18,29 +18,30 @@ import java.util.Date;
 @AllArgsConstructor
 public class MemberRequestDto {
 
-    private String memberId;
-    private String password;
-    private String name;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date birthday;
-    private String email;
-    private String phoneNum;
-    private String nickname;
-    private String address;
-    private String sex;
-    private MemberProfileImageDto profileImage;
+  private String memberId;
+  private String password;
+  private String name;
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private Date birthday;
+  private String email;
+  private String phoneNum;
+  private String nickname;
+  private String address;
+  private String sex;
+  private MemberProfileImageDto profileImage;
 
-    public Member toEntity() {
-        return Member.builder()
-                .memberId(this.memberId)
-                .password(new BCryptPasswordEncoder(10).encode(this.password)) /* password Bcrypt로 암호화 후 DB에 저장 */
-                .name(this.name)
-                .birthday(this.birthday)
-                .email(this.email)
-                .phoneNum(this.phoneNum)
-                .nickname(this.nickname)
-                .address(this.address)
-                .sex(this.sex)
-                .build();
-    }
+  public Member toEntity() {
+    return Member.builder()
+        .memberId(this.memberId)
+        .password(
+            new BCryptPasswordEncoder(10).encode(this.password)) /* password Bcrypt로 암호화 후 DB에 저장 */
+        .name(this.name)
+        .birthday(this.birthday)
+        .email(this.email)
+        .phoneNum(this.phoneNum)
+        .nickname(this.nickname)
+        .address(this.address)
+        .sex(this.sex)
+        .build();
+  }
 }
